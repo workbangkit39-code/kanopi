@@ -143,12 +143,18 @@ body:not(.lg) .nav{display:flex}
 .doc .ttd{margin:16px 0 0 auto;width:55%;text-align:center}.doc .ttd img{height:64px;max-width:100%}
 @media print{body>*:not(#prn){display:none!important}#prn{display:block}body{padding:0;max-width:none}.doc{box-shadow:none;border-radius:0;margin:0}}
 #sw{position:absolute;left:-10000px;top:0}#stg{width:21cm}
-.pg{position:relative;width:21cm;height:29.68cm;background:#fff;color:#000;padding:2.5cm 3cm 3cm 4cm;box-sizing:border-box;overflow:hidden;font:12pt/1.45 "Times New Roman",Times,"Liberation Serif","Nimbus Roman",serif;text-align:justify}
-.pg .bd{height:24.2cm;overflow:hidden}
-.pg .ft{position:absolute;left:4cm;right:3cm;bottom:1.4cm;border-top:.75pt solid #000;padding-top:3pt;display:flex;justify-content:space-between;font-size:9.5pt}
-.pg .kop{display:flex;align-items:center;gap:10pt;border-bottom:4px double #000;padding-bottom:6pt;margin-bottom:12pt;text-align:center}
-.pg .kop img{width:2.2cm;height:2.2cm;object-fit:contain;flex:none}
-.pg .kt{flex:1;line-height:1.25}.pg .k1{font-weight:700;font-size:13pt}.pg .k2{font-weight:700;font-size:13pt}.pg .k3{font-size:11pt}
+/* ===== FORMAT HALAMAN LAPORAN: satu-satunya sumber ukuran (A4 21 x 29,68 cm) =====
+   Margin halaman: atas 1,2 cm | kanan 2,5 cm | kiri 2,5 cm | bawah isi 2,4 cm.
+   Ubah angka di sini saja bila ingin menggeser margin. */
+.pg{position:relative;width:21cm;height:29.68cm;background:#fff;color:#000;box-sizing:border-box;padding:0;overflow:hidden;font:12pt/1.45 "Times New Roman",Times,"Liberation Serif","Nimbus Roman",serif;text-align:justify}
+.pg .pbd{position:absolute;left:2.5cm;right:2.5cm;top:1.2cm;bottom:2.4cm;margin:0;padding:0;overflow:hidden}
+.pg .ft{position:absolute;left:2.5cm;right:2.5cm;bottom:1.2cm;border-top:.75pt solid #000;padding-top:3pt;display:flex;justify-content:space-between;font-size:9.5pt}
+.pg .kop{display:flex;align-items:center;gap:8pt;border-bottom:3px double #000;padding-bottom:5pt;margin:0 0 10pt;text-align:center}
+.pg .kop img{width:1.9cm;height:1.9cm;object-fit:contain;flex:none}
+.pg .kt{flex:1;min-width:0;line-height:1.2}
+.pg .kt div{white-space:nowrap;overflow:hidden}
+.pg .k1,.pg .k2{font-weight:700;font-size:15pt;text-transform:uppercase}
+.pg .k3{font-weight:400;font-size:11pt;text-transform:uppercase}
 .pg .tl{text-align:center;font-weight:700;margin-bottom:2pt}
 .pg .h{font-weight:700;margin:10pt 0 3pt}
 .pg .li{display:flex;gap:6pt;margin-bottom:2pt}.pg .li b{font-weight:400;flex:none;width:18pt}
@@ -183,16 +189,6 @@ body:not(.lg) .nav{display:flex}
 @keyframes rwfall{to{transform:translateY(520px) rotate(540deg)}}
 @keyframes rwpop{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
 @media (prefers-reduced-motion:reduce){.cf{display:none}.rwm{animation:none}}
-.pg{padding:2.5cm 2.5cm 2.5cm 3cm}
-.pg .bd{height:24.6cm}
-.pg .ft{left:3cm;right:2.5cm;bottom:1.2cm}
-.pg .kop{gap:8pt;border-bottom:3px double #000;padding-bottom:5pt;margin-bottom:10pt}
-.pg .kop img{width:1.9cm;height:1.9cm}
-.pg .kt{flex:1;min-width:0;line-height:1.2}
-.pg .kt div{white-space:nowrap;overflow:hidden}
-.pg .k1{font-weight:700;font-size:12pt;text-transform:uppercase}
-.pg .k2{font-weight:700;font-size:15pt;text-transform:uppercase}
-.pg .k3{font-size:9pt;text-transform:uppercase}
 .hs{color:#CFE3D4;font-size:14px;margin-top:4px}
 .seg{display:flex;background:var(--tint);border-radius:14px;padding:4px;gap:4px;margin-top:14px}
 .seg button{flex:1;border:0;background:none;padding:10px 6px;border-radius:11px;font-weight:600;font-size:14px;cursor:pointer;color:var(--mute)}
@@ -227,9 +223,6 @@ body:not(.lg) .nav{display:flex}
 @keyframes fu{from{transform:translateY(30px);opacity:0}25%{opacity:1}75%{opacity:1}to{transform:translateY(-50px);opacity:0}}.fu{animation:fu 7s linear infinite}
 .bb{animation:fl 3s ease-in-out infinite}.ob{transform-box:view-box;transform-origin:320px 100px;animation:spin 12s linear infinite}
 .net{position:fixed;top:max(8px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:60;background:#0E3B2B;color:#fff;border:0;border-radius:999px;padding:6px 14px;font-size:12.5px;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer}.net[hidden]{display:none}
-.pg{padding:1.8cm 3cm 2cm 3cm !important}
-.pg .bd{height:25.7cm !important}
-.pg .ft{left:3cm !important;right:3cm !important;bottom:1.0cm !important}
 .pg .g2 img{aspect-ratio:auto;height:auto;max-height:7.4cm;object-fit:contain;background:#fff}
 body{overflow-x:hidden !important}
 #lpv{overflow-x:hidden !important;width:100% !important;max-width:100% !important;touch-action:pan-y !important;overscroll-behavior-x:none !important}
@@ -240,7 +233,6 @@ body{overflow-x:hidden !important}
 .ph .sv{right:auto;left:6px;width:auto;padding:0 10px;border-radius:14px;font-size:12px;font-weight:700}
 
 #lsg{display:none !important}
-.pg{padding:0 !important}.pg .bd{position:absolute !important;left:2.5cm !important;right:2.5cm !important;top:2.5cm !important;width:auto !important;height:24.6cm !important;box-sizing:border-box !important;padding:0 !important;margin:0 !important;animation:none !important;transform:none !important}.pg .ft{left:2.5cm !important;right:2.5cm !important;bottom:1.2cm !important}
 .pg .g2{gap:10pt !important;margin-bottom:10pt !important;align-items:start}.pg .g2 img{width:100% !important;height:6.3cm !important;max-height:none !important;aspect-ratio:auto !important;object-fit:contain !important;background:#f3f3f3 !important;border:.75pt solid #999 !important}.pg .g2>div:only-child{grid-column:1/-1;width:50%;margin:0 auto}.pg .g2 span{margin-top:3pt}
 .pg .ttd{width:7cm !important}.pg .ttd img{display:block !important;height:1.8cm;max-width:100%;margin:3pt auto 2pt !important}.pg .ttd b{display:block}.pg .ttd u{text-underline-offset:2pt}
 .lmap{height:380px;border-radius:16px;overflow:hidden;position:relative}
@@ -1498,7 +1490,14 @@ $('#sdl').onclick=function(){delete pr.s;sgW();toast('Tanda tangan tersimpan dih
 function persist(){tplSave();pr.a=$('#k1').value.trim();pr.b=$('#k2').value.trim();pr.c=$('#k3').value.trim();pr.n=$('#ln').value.trim();pr.p=$('#lp').value.trim();pr.k=$('#lk').value.trim();
   try{localStorage.setItem('kanopi-profil',JSON.stringify(pr));localStorage.setItem('kanopi-last',JSON.stringify({j:$('#lj').value,t:$('#lt').value,x:$('#ltx').value,l:$('#ll').value,u:$('#lu').value,h:$('#lh').value}))}catch(e){}}
 function val(){var m=[];if(!$('#lt').value)m.push('Jenis agenda belum dipilih');else if($('#lt').value==='Lainnya'&&!$('#ltx').value.trim())m.push('Jenis agenda belum ditulis');if(!$('#lj').value.trim())m.push('Judul agenda belum diisi');if(!rapi($('#lu').value).length)m.push('Uraian kegiatan belum diisi');if(P.length<2)m.push('Foto dokumentasi minimal 2 (kurang '+(2-P.length)+')');if(!$('#k1').value.trim()||!$('#k2').value.trim())m.push('Kop surat baris 1 dan 2 belum diisi');return m}
-function fitKop(p){[['.k1',12,8.5],['.k2',15,10],['.k3',9,6.5]].forEach(function(q){var e=p.querySelector(q[0]);if(!e)return;var s=q[1];e.style.fontSize=s+'pt';while(e.scrollWidth>e.clientWidth+1&&s>q[2]){s-=.25;e.style.fontSize=s+'pt'}if(e.scrollWidth>e.clientWidth+1){e.style.whiteSpace='normal';e.style.overflow='visible'}})}
+function fitKop(p){var a=p.querySelector('.k1'),b=p.querySelector('.k2'),c=p.querySelector('.k3');if(!a||!b||!c)return;
+  var ok=function(e){return e.scrollWidth<=e.clientWidth+1},z=15;
+  a.style.fontSize=b.style.fontSize=z+'pt';
+  while(!(ok(a)&&ok(b))&&z>11){z-=.25;a.style.fontSize=b.style.fontSize=z+'pt'}
+  if(!(ok(a)&&ok(b)))[a,b].forEach(function(e){e.style.whiteSpace='normal';e.style.overflow='visible'});
+  var t=Math.min(11,z-2.5);c.style.fontSize=t+'pt';
+  while(!ok(c)&&t>8){t-=.25;c.style.fontSize=t+'pt'}
+  if(!ok(c)){c.style.whiteSpace='normal';c.style.overflow='visible'}}
 function render(u){var j=$('#lj').value.trim()||'(judul kegiatan)',jn=jt(),lk=$('#ll').value.trim(),dv=$('#ld').value||today,d=new Date(dv+'T00:00:00'),
   tg=d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),tp=d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}),hs=rapi($('#lh').value),B=[],L='ABCDEF',k=0,
   lc=function(s){return /^[A-Z][a-z]/.test(s)?s.charAt(0).toLowerCase()+s.slice(1):s};
@@ -1516,7 +1515,7 @@ function render(u){var j=$('#lj').value.trim()||'(judul kegiatan)',jn=jt(),lk=$(
   if(P.length){var rows=[];for(var i=0;i<P.length;i+=2)rows.push('<div class="g2">'+[i,i+1].filter(function(x){return x<P.length}).map(function(x){return '<div><img src="'+P[x]+'" alt="Dokumentasi '+(x+1)+'"><span>Dokumentasi '+(x+1)+'</span></div>'}).join('')+'</div>');sec('Dokumentasi',rows)}
   B.push('<div class="ttd">'+(pr.k?esc(pr.k)+', ':'')+tp+'<br>Penyuluh Kehutanan<br>'+(drawn?'<img src="'+cv.toDataURL()+'" alt="Tanda tangan">':'<div style="height:1.8cm"></div>')+'<b><u>'+esc(pr.n||'Nama penyuluh')+'</u></b>'+'<div style="margin-top:1pt">NIP. '+(pr.p?esc(pr.p):'...................')+'</div>'+'</div>');
   var st=$('#stg'),pgs=[],bd;st.innerHTML='';
-  function np(){var p=document.createElement('div');p.className='pg';p.innerHTML='<div class="bd"></div><div class="ft"></div>';st.appendChild(p);pgs.push(p);bd=p.firstChild}
+  function np(){var p=document.createElement('div');p.className='pg';p.innerHTML='<div class="pbd"></div><div class="ft"></div>';st.appendChild(p);pgs.push(p);bd=p.firstChild}
   np();B.forEach(function(h){var e=document.createElement('div');e.innerHTML=h;bd.appendChild(e);if(h.indexOf('class="kop"')===5)fitKop(e);if(bd.scrollHeight>bd.clientHeight+1&&bd.children.length>1){bd.removeChild(e);np();bd.appendChild(e)}});
   pgs.forEach(function(p,i){p.lastChild.innerHTML='<span>Laporan Kegiatan Penyuluhan Kehutanan – '+tp+'</span><span>Halaman '+(i+1)+' dari '+pgs.length+'</span>'});
   var pv=$('#lpv'),w=Math.floor(pv.clientWidth||360),pageW=794,pageH=1123,sc=Math.max(0.28,(w-2)/pageW);pv.innerHTML='';
