@@ -1131,6 +1131,14 @@ body{background-image:radial-gradient(circle at 100% 0,rgba(255,176,32,.14),tran
     <label class="chk2"><input type="checkbox" id="kb" checked>Pisahkan jadi poin dan kembangkan otomatis di laporan</label>
     <label for="lh">Hasil dan tindak lanjut (opsional)</label>
     <div class="in"><textarea id="lh" placeholder="Hanya diisi bila ada. Tidak dikembangkan otomatis."></textarea></div>
+    <h2>Data diri</h2>
+    <div class="st">Muncul sebagai bagian A pada laporan. Cukup diisi sekali, tersimpan otomatis di perangkat dan terisi lagi pada laporan berikutnya. Boleh diubah kapan saja.</div>
+    <label for="ln">Nama</label><div class="in"><input id="ln" autocomplete="name" placeholder="Nama lengkap"></div>
+    <label for="lp">NIP (Nomor Induk Pegawai)</label><div class="in"><input id="lp" inputmode="numeric" placeholder="NIP"></div>
+    <label for="lpg">Pangkat/Golongan</label><div class="in"><select id="lpg"></select></div>
+    <label for="ljb">Jabatan</label><div class="in"><select id="ljb"></select></div>
+    <label for="luk">Unit kerja</label><div class="in"><input id="luk" placeholder="Contoh: Cabang Dinas Kehutanan Wilayah VII"></div>
+    <div class="st" id="dds" role="status"></div>
     <h2>Kop surat</h2>
     <div id="kps" style="display:none;align-items:center;gap:10px;margin-top:8px;padding:10px 12px;border:1.5px solid var(--line);border-radius:14px"><img id="kpi" alt="" style="width:40px;height:40px;object-fit:contain;display:none"><div style="flex:1;min-width:0"><div class="mt" id="kpt" style="font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div><div class="st" style="margin:2px 0 0">Kop tersimpan. Tidak perlu diisi atau diunggah lagi.</div></div><button type="button" class="link" id="kpe">Ubah kop</button></div>
     <div id="kpw">
@@ -1141,11 +1149,9 @@ body{background-image:radial-gradient(circle at 100% 0,rgba(255,176,32,.14),tran
     <label for="k3">Baris 3: alamat</label><div class="in"><input id="k3" placeholder="Alamat, telepon, atau email"></div>
     <button type="button" class="link" id="kpd" style="margin-top:8px">Selesai, simpan kop</button>
     </div>
-    <h2>Pelapor dan titimangsa</h2>
-    <div class="st">Nama, NIP, dan kabupaten/kota tersimpan otomatis dari laporan sebelumnya. Boleh diubah kapan saja.</div>
+    <h2>Titimangsa dan tanda tangan</h2>
+    <div class="st">Kabupaten/kota tersimpan otomatis dari laporan sebelumnya. Nama, NIP, dan jabatan pada tanda tangan diambil dari Data diri.</div>
     <label for="lk">Kabupaten/kota (untuk titimangsa)</label><div class="in"><input id="lk" placeholder="Contoh: Sukabumi"></div>
-    <label for="ln">Nama penyuluh</label><div class="in"><input id="ln" placeholder="Nama lengkap"></div>
-    <label for="lp">NIP (opsional)</label><div class="in"><input id="lp" inputmode="numeric" placeholder="NIP"></div>
     <label>Tanda tangan</label>
     <canvas class="sg" id="sg" width="600" height="260" aria-label="Area tanda tangan"></canvas>
     <div class="sgr"><button type="button" class="link" id="ssv">Simpan tanda tangan</button><button type="button" class="link" id="sus">Pakai yang tersimpan</button><button type="button" class="link" id="sc2">Tanda tangan ulang</button><button type="button" class="link" id="sdl">Hapus yang tersimpan</button></div><div class="st" id="sgs"></div>
@@ -1301,6 +1307,10 @@ var T={Pendampingan:['#1B6B47','M12 21v-9M12 12c0-4 3-6 7-6 0 4-3 6-7 6ZM12 15c0
 var JA=["Koordinasi di lingkup Internal", "Mengikuti Sosialisasi di lingkup internal", "Mengikuti Rapat/Kegiatan/Sosialisasi di lingkup internal", "Mengikuti Rapat/Kegiatan di lingkup internal", "Menyampaikan Paparan dalam Kegiatan/Rapat/Acara", "Mengikuti Rapat/Kegiatan di perangkat daerah/Instansi Lain", "Mengikuti Rapat/Kegiatan/sosialisasi di perangkat daerah/Instansi Lain", "Mengikuti sosialisasi di perangkat daerah/Instansi Lain", "Koordinasi dengan instansi atau pihak terkait", "Koordinasi dan konsultasi dengan Kab/Kota/Provinsi Lain", "Koordinasi dan konsultasi dengan Kementerian / Lembaga", "Koordinasi dan konsultasi dengan perangkat daerah", "Mengikuti Apel/Upacara", "Koordinasi dengan Perangkat Daerah/ di Lingkup Internal", "Membuat Konsep Naskah Dinas", "Memberikan Layanan informasi", "Mengumpulkan data potensi wilayah tingkat desa dan kecamatan", "Menyusun laporan bulanan", "Menyusun laporan semester", "Menyusun laporan tahunan", "Mengumpulkan data potensi wilayah tingkat kecamatan", "Mengolah dan Mengkompilasi data atau bahan untuk dijadikan informasi", "Menyampaikan Hasil Laporan Kegiatan", "Menyusun rekomendasi atas hasil analisis dan telaahan", "Mencari dan Mempelajari peraturan perundang-undangan", "Menyusun Laporan Kegiatan", "Mengelola/mengolah Data/Dokumen/Peralatan Kerja", "Mengolah data potensi wilayah tingkat Desa", "Menyusun materi penyuluhan dalam bentuk brosur", "Menyusun materi penyuluhan dalam bentuk flipchart", "Menyusun materi penyuluhan dalam bentuk seri foto", "Menyusun rencana kerja tahunan perorangan/individu", "Menyusun programa penyuluhan tingkat unit kerja dan kecamatan sebagai anggota", "Menjadi Moderator/ MC", "Mengkaji/Menelaah/Menganalisis/Mempelajari Dokumen/Data/Mengidentifikasi", "Membuat rekapitulasi data/bahan/berkas/laporan", "Memfasilitasi pembentukan kelompok", "Melakukan kegiatan demonstrasi cara/hasil percontohan kepada kelompok sasaran", "Menyusun materi penyuluhan dalam bentuk leaflet", "Mengevaluasi/mereviu/monitoring", "Menerima kunjungan kerja (1x kunjungan)", "Membuat/Menyusun Konsep Kebijakan", "Melakukan kegiatan diskusi kelompok dengan kelompok sasaran sebagai fasilitator", "Sebagai pemain dalam kegiatan Seni Budaya tradisional dan modern", "Melakukan diskusi kelompok dengan kelompok sasaran sebagai peserta", "Sebagai pemain dalam gelar Seni Budaya tradisional dan modern", "Melakukan pendampingan kegiatan kelompok", "Melaksanakan penyusunan pedoman/ karya tulis ilmiah", "Mengikuti Kegiatan pengembangan kompetensi (Diklat/PKS/bimtek/seminar/ webinar/workshop/lokakarya)", "Melaksanakan tinjauan dan ulasan ilmiah", "Melakukan kunjungan tatap muka/anjangsana kepada perorangan", "Melakukan kunjungan kerja/anjangkarya kepada perorangan", "Melakukan temu wicara/sarasehan dengan kelompok sasaran sebagai peserta", "Melaksanakan penyusunan DRAFT pedoman/ karya tulis ilmiah", "Melaksanakan Kegiatan pengembangan kompetensi (PKS/bimtek/seminar/webinar/workshop/lokakarya)", "Mengikuti Pendidikan dan Pelatihan"];
 function cat(t){t=String(t||'').toLowerCase();if(/rapat|apel|upacara/.test(t))return'Rapat';if(/diskusi|temu wicara|sarasehan/.test(t))return'Diskusi';if(/koordinasi|konsultasi/.test(t))return'Koordinasi';if(/kunjungan|anjangsana|anjangkarya/.test(t))return'Kunjungan';if(/evaluasi|reviu|monitoring|mengkaji|menelaah|tinjauan/.test(t))return'Monitoring';if(/pendampingan|pembentukan kelompok|demonstrasi/.test(t))return'Pendampingan';if(/penyuluhan|paparan|sosialisasi|layanan informasi|moderator|pelatihan|pendidikan/.test(t))return'Penyuluhan';return'Lainnya'}
 function tc(t){return T[t]||T[cat(t)]||T.Lainnya}
+var PG=["Juru Muda, I/a","Juru Muda Tk. 1, I/b","Juru, I/c","Juru Tk. 1, I/d","Pengatur Muda, II/a","Pengatur Muda Tk. 1, II/b","Pengatur, II/c","Pengatur Tk. 1, II/d","Penata Muda, III/a","Penata Muda Tk. 1, III/b","Penata, III/c","Penata Tk. 1, III/d","Pembina, IV/a","Pembina Tk. 1, IV/b","Pembina Utama Muda, IV/c","Pembina Utama Madya, IV/d","Pembina Utama, IV/e"],
+JB=["Calon Penyuluh Kehutanan","Penyuluh Kehutanan Pemula","Penyuluh Kehutanan Terampil","Penyuluh Kehutanan Mahir","Penyuluh Kehutanan Penyelia","Penyuluh Kehutanan Pertama","Penyuluh Kehutanan Muda","Penyuluh Kehutanan Madya","Penyuluh Kehutanan Utama"];
+function ddOpts(a,ph){return '<option value="">'+ph+'</option>'+a.map(function(o){return '<option value="'+esc(o)+'">'+esc(o)+'</option>'}).join('')}
+function ddSet(id,v){var e=$(id);if(!e)return;if(v&&e.tagName==='SELECT'&&!Array.prototype.some.call(e.options,function(o){return o.value===v})){var o=document.createElement('option');o.value=o.textContent=v;e.appendChild(o)}e.value=v||''}
 function jaOpts(){return '<option value="">Pilih jenis agenda</option>'+JA.map(function(o){return '<option value="'+o.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'">'+o.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</option>'}).join('')+'<option value="Lainnya">Lainnya (tulis sendiri)</option>'}
 var CKI='<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
@@ -1367,7 +1377,7 @@ $('#sv').onclick=function(){var ti=$('#ti').value.trim();if(!ti){$('#er2').textC
   save();cur=$('#dd').value;closeS();drawA();toast('Kegiatan disimpan')};
 var P=[],drawn=false,acc='',pr={};
 try{pr=JSON.parse(localStorage.getItem('kanopi-profil')||'{}')}catch(e){}
-$('#lt').innerHTML=jaOpts();
+$('#lt').innerHTML=jaOpts();$('#lpg').innerHTML=ddOpts(PG,'Pilih pangkat/golongan');$('#ljb').innerHTML=ddOpts(JB,'Pilih jabatan');
 function jt(){var v=$('#lt').value,x=$('#ltx').value.trim();return v==='Lainnya'&&x?x:v}
 function setJ(t){var q=$('#lt');if(t&&JA.indexOf(t)>=0){q.value=t;$('#ltx').value=''}else{q.value='Lainnya';$('#ltx').value=t||'Rangkaian kegiatan penyuluhan'}ltt()}
 function ltt(){$('#ltw').style.display=$('#lt').value==='Lainnya'?'':'none'}
@@ -1450,14 +1460,15 @@ function restSig(){if(pr.s&&!drawn&&!noRest){var im=new Image();im.onload=functi
 function initL(){tab('in');if(!rest){rest=true;try{var d=JSON.parse(localStorage.getItem('kanopi-draft')||'null');if(d&&d.f){Object.keys(d.f).forEach(function(k){var e=$('#'+k);if(e)e.value=d.f[k]});curAg=d.ag||null;if(d.ac!=null)acc=d.ac;if(MEM.draft&&MEM.draft.length)P=MEM.draft.slice()}}catch(e){}}
   if(!$('#ld').value)$('#ld').value=today;if(!$('#lw').value)$('#lw').value=hm();
   if(!pr.a&&!pr.l&&MEM.tpl)Object.keys(MEM.tpl).forEach(function(k){if(!pr[k])pr[k]=MEM.tpl[k]});
-  [['#k1','a'],['#k2','b'],['#k3','c'],['#ln','n'],['#lp','p'],['#lk','k']].forEach(function(q){if(!$(q[0]).value)$(q[0]).value=pr[q[1]]||''});showLogo();restSig();rp();fag();ltt();kpShow()}
+  [['#k1','a'],['#k2','b'],['#k3','c'],['#ln','n'],['#lp','p'],['#lk','k'],['#lpg','pg'],['#ljb','jb'],['#luk','uk']].forEach(function(q){if(!$(q[0]).value)ddSet(q[0],pr[q[1]]||'')});ddSt();showLogo();restSig();rp();fag();ltt();kpShow()}
 var kpEdit=false;
 function kpShow(){var has=!!(pr.a&&pr.b),on=has&&!kpEdit;$('#kps').style.display=on?'flex':'none';$('#kpw').style.display=on?'none':'';
   if(on){$('#kpt').textContent=(pr.a+' · '+pr.b).toLocaleUpperCase('id-ID');var i=$('#kpi');if(pr.l){i.src=pr.l;i.style.display='block'}else i.style.display='none'}}
-function tplSave(){pr.a=$('#k1').value.trim();pr.b=$('#k2').value.trim();pr.c=$('#k3').value.trim();pr.n=$('#ln').value.trim();pr.p=$('#lp').value.trim();pr.k=$('#lk').value.trim();
+function tplSave(){pr.a=$('#k1').value.trim();pr.b=$('#k2').value.trim();pr.c=$('#k3').value.trim();pr.n=$('#ln').value.trim();pr.p=$('#lp').value.trim();pr.k=$('#lk').value.trim();pr.pg=$('#lpg').value;pr.jb=$('#ljb').value;pr.uk=$('#luk').value.trim();
   try{localStorage.setItem('kanopi-profil',JSON.stringify(pr))}catch(e){}
-  kset('tpl',{l:pr.l||'',a:pr.a,b:pr.b,c:pr.c,n:pr.n,p:pr.p,k:pr.k})}
-['#k1','#k2','#k3','#ln','#lp','#lk'].forEach(function(q){$(q).addEventListener('input',tplSave)});
+  kset('tpl',{l:pr.l||'',a:pr.a,b:pr.b,c:pr.c,n:pr.n,p:pr.p,k:pr.k,pg:pr.pg,jb:pr.jb,uk:pr.uk});ddSt()}
+function ddSt(){var o=$('#dds');if(!o)return;var m=[];if(!$('#lp').value.trim())m.push('NIP');if(!$('#lpg').value)m.push('Pangkat/Golongan');if(!$('#ljb').value)m.push('Jabatan');if(!$('#luk').value.trim())m.push('Unit kerja');o.textContent=m.length?'Belum diisi: '+m.join(', ')+'. Bagian ini tetap dicetak, hanya tampil sebagai tanda strip (-).':'Data diri lengkap dan tersimpan di perangkat ini.'}
+['#k1','#k2','#k3','#ln','#lp','#lk','#luk'].forEach(function(q){$(q).addEventListener('input',tplSave)});['#lpg','#ljb'].forEach(function(q){$(q).addEventListener('change',tplSave)});
 $('#kpe').onclick=function(){kpEdit=true;kpShow()};
 $('#kpd').onclick=function(){tplSave();kpEdit=false;kpShow();toast('Kop tersimpan untuk laporan berikutnya')};
 var lastAuto='';
@@ -1487,7 +1498,7 @@ $('#sc2').onclick=function(){cx.clearRect(0,0,cv.width,cv.height);drawn=false;no
 $('#ssv').onclick=function(){if(!drawn){toast('Tanda tangani dulu di kotak');return}pr.s=cv.toDataURL();noRest=false;sgW();toast('Tanda tangan disimpan')};
 $('#sus').onclick=function(){if(!pr.s)return;noRest=false;cx.clearRect(0,0,cv.width,cv.height);drawn=false;restSig();toast('Memakai tanda tangan tersimpan')};
 $('#sdl').onclick=function(){delete pr.s;sgW();toast('Tanda tangan tersimpan dihapus')};sgI();
-function persist(){tplSave();pr.a=$('#k1').value.trim();pr.b=$('#k2').value.trim();pr.c=$('#k3').value.trim();pr.n=$('#ln').value.trim();pr.p=$('#lp').value.trim();pr.k=$('#lk').value.trim();
+function persist(){tplSave();pr.a=$('#k1').value.trim();pr.b=$('#k2').value.trim();pr.c=$('#k3').value.trim();pr.n=$('#ln').value.trim();pr.p=$('#lp').value.trim();pr.k=$('#lk').value.trim();pr.pg=$('#lpg').value;pr.jb=$('#ljb').value;pr.uk=$('#luk').value.trim();
   try{localStorage.setItem('kanopi-profil',JSON.stringify(pr));localStorage.setItem('kanopi-last',JSON.stringify({j:$('#lj').value,t:$('#lt').value,x:$('#ltx').value,l:$('#ll').value,u:$('#lu').value,h:$('#lh').value}))}catch(e){}}
 function val(){var m=[];if(!$('#lt').value)m.push('Jenis agenda belum dipilih');else if($('#lt').value==='Lainnya'&&!$('#ltx').value.trim())m.push('Jenis agenda belum ditulis');if(!$('#lj').value.trim())m.push('Judul agenda belum diisi');if(!rapi($('#lu').value).length)m.push('Uraian kegiatan belum diisi');if(P.length<2)m.push('Foto dokumentasi minimal 2 (kurang '+(2-P.length)+')');if(!$('#k1').value.trim()||!$('#k2').value.trim())m.push('Kop surat baris 1 dan 2 belum diisi');return m}
 function fitKop(p){var a=p.querySelector('.k1'),b=p.querySelector('.k2'),c=p.querySelector('.k3');if(!a||!b||!c)return;
@@ -1499,7 +1510,7 @@ function fitKop(p){var a=p.querySelector('.k1'),b=p.querySelector('.k2'),c=p.que
   while(!ok(c)&&t>8){t-=.25;c.style.fontSize=t+'pt'}
   if(!ok(c)){c.style.whiteSpace='normal';c.style.overflow='visible'}}
 function render(u){var j=$('#lj').value.trim()||'(judul kegiatan)',jn=jt(),lk=$('#ll').value.trim(),dv=$('#ld').value||today,d=new Date(dv+'T00:00:00'),
-  tg=d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),tp=d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}),hs=rapi($('#lh').value),B=[],L='ABCDEF',k=0,
+  tg=d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),tp=d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}),hs=rapi($('#lh').value),B=[],L='ABCDEFGH',k=0,
   lc=function(s){return /^[A-Z][a-z]/.test(s)?s.charAt(0).toLowerCase()+s.slice(1):s};
   var sec=function(t,a){B.push('<div><div class="h">'+L[k++]+'. '+t+'</div>'+a[0]+'</div>');a.slice(1).forEach(function(x){B.push(x)})},
   li=function(a){return a.map(function(x,i){return '<div class="li"><b>'+(i+1)+'.</b><span>'+esc(x)+'</span></div>'})};
@@ -1507,13 +1518,15 @@ function render(u){var j=$('#lj').value.trim()||'(judul kegiatan)',jn=jt(),lk=$(
   var co=$('#la').value&&$('#lo').value?esc($('#la').value+', '+$('#lo').value)+(acc!==''?' (akurasi ±'+acc+' m)':''):'-';
   B.push('<div class="kop">'+(pr.l?'<img src="'+pr.l+'" alt="">':'')+'<div class="kt"><div class="k1">'+esc((pr.a||'Nama instansi').toLocaleUpperCase('id-ID'))+'</div><div class="k2">'+esc((pr.b||'Unit kerja').toLocaleUpperCase('id-ID'))+'</div><div class="k3">'+esc((pr.c||'Alamat instansi').toLocaleUpperCase('id-ID'))+'</div></div>'+(pr.l?'<div style="width:1.9cm;flex:none"></div>':'')+'</div>');
   B.push('<div class="tl">LAPORAN KEGIATAN PENYULUHAN KEHUTANAN</div><div style="text-align:center;margin-bottom:4pt">'+esc(jn)+'</div>');
+  var dd=function(v){return v?esc(v):'-'};
+  sec('Data Diri',['<table><tr><td>Nama</td><td>: '+dd(pr.n)+'</td></tr><tr><td>NIP</td><td>: '+dd(pr.p)+'</td></tr><tr><td>Pangkat/Golongan</td><td>: '+dd(pr.pg)+'</td></tr><tr><td>Jabatan</td><td>: '+dd(pr.jb)+'</td></tr><tr><td>Unit Kerja</td><td>: '+dd(pr.uk)+'</td></tr></table>']);
   sec('Pendahuluan',['<p>Pada '+tg+', telah dilaksanakan kegiatan '+esc(lc(j))+(lk?' bertempat di '+esc(lk):'')+'. Laporan ini disusun sebagai pertanggungjawaban pelaksanaan kegiatan penyuluhan kehutanan.</p>']);
   sec('Pelaksanaan',['<table><tr><td>Hari dan tanggal</td><td>: '+tg+'</td></tr><tr><td>Waktu</td><td>: '+esc($('#lw').value)+' '+tz()+'</td></tr><tr><td>Tempat</td><td>: '+(esc(lk)||'-')+'</td></tr><tr><td>Judul agenda</td><td>: '+esc(j)+'</td></tr></table>']);
   sec('Uraian Kegiatan',li(u));
   if(hs.length)sec('Hasil dan Tindak Lanjut',li(hs));
   sec('Penutup',['<p>Demikian laporan ini disusun untuk dapat dipergunakan sebagaimana mestinya.</p>']);
   if(P.length){var rows=[];for(var i=0;i<P.length;i+=2)rows.push('<div class="g2">'+[i,i+1].filter(function(x){return x<P.length}).map(function(x){return '<div><img src="'+P[x]+'" alt="Dokumentasi '+(x+1)+'"><span>Dokumentasi '+(x+1)+'</span></div>'}).join('')+'</div>');sec('Dokumentasi',rows)}
-  B.push('<div class="ttd">'+(pr.k?esc(pr.k)+', ':'')+tp+'<br>Penyuluh Kehutanan<br>'+(drawn?'<img src="'+cv.toDataURL()+'" alt="Tanda tangan">':'<div style="height:1.8cm"></div>')+'<b><u>'+esc(pr.n||'Nama penyuluh')+'</u></b>'+'<div style="margin-top:1pt">NIP. '+(pr.p?esc(pr.p):'...................')+'</div>'+'</div>');
+  B.push('<div class="ttd">'+(pr.k?esc(pr.k)+', ':'')+tp+'<br>'+esc(pr.jb||'Penyuluh Kehutanan')+'<br>'+(drawn?'<img src="'+cv.toDataURL()+'" alt="Tanda tangan">':'<div style="height:1.8cm"></div>')+'<b><u>'+esc(pr.n||'Nama penyuluh')+'</u></b>'+'<div style="margin-top:1pt">NIP. '+(pr.p?esc(pr.p):'...................')+'</div>'+'</div>');
   var st=$('#stg'),pgs=[],bd;st.innerHTML='';
   function np(){var p=document.createElement('div');p.className='pg';p.innerHTML='<div class="pbd"></div><div class="ft"></div>';st.appendChild(p);pgs.push(p);bd=p.firstChild}
   np();B.forEach(function(h){var e=document.createElement('div');e.innerHTML=h;bd.appendChild(e);if(h.indexOf('class="kop"')===5)fitKop(e);if(bd.scrollHeight>bd.clientHeight+1&&bd.children.length>1){bd.removeChild(e);np();bd.appendChild(e)}});
@@ -1962,7 +1975,7 @@ if('serviceWorker' in navigator&&location.protocol==='https:'&&!/claude/.test(lo
 document.addEventListener('click',function(e){if(e.target.id==='e1'){var f=$('#fab');if(f)f.click()}});
 window.ck=function(m){var g=function(s){var e=$(s);return e?String(e.value||'').trim():''},t='';t=jt()
 var nu=rapi($('#lu').value).length,dr=typeof drawn!=='undefined'&&drawn;
-var R=[['Judul agenda',g('#lj'),1],['Jenis agenda',t,1],['Tanggal dan jam',(g('#ld')+' '+g('#lw')).trim(),1],['Lokasi',g('#ll'),0],['Koordinat',g('#la')&&g('#lo')?g('#la')+', '+g('#lo'):'',0],['Foto dokumentasi',P.length?P.length+' foto (minimal 2)':'',1],['Uraian kegiatan',nu?nu+' poin':'',1],['Kop surat',g('#k1')&&g('#k2')?g('#k1'):'',1],['Nama penyuluh',g('#ln'),0],['Tanda tangan',dr?'Sudah ada':'',0]];
+var R=[['Judul agenda',g('#lj'),1],['Jenis agenda',t,1],['Tanggal dan jam',(g('#ld')+' '+g('#lw')).trim(),1],['Lokasi',g('#ll'),0],['Koordinat',g('#la')&&g('#lo')?g('#la')+', '+g('#lo'):'',0],['Foto dokumentasi',P.length?P.length+' foto (minimal 2)':'',1],['Uraian kegiatan',nu?nu+' poin':'',1],['Kop surat',g('#k1')&&g('#k2')?g('#k1'):'',1],['Nama penyuluh',g('#ln'),0],['NIP',g('#lp'),0],['Pangkat/Golongan',g('#lpg'),0],['Jabatan',g('#ljb'),0],['Unit kerja',g('#luk'),0],['Tanda tangan',dr?'Sudah ada':'',0]];
 $('#ck').innerHTML=R.map(function(r){var ok=!!r[1];return '<div class="mt" style="padding:7px 0;border-bottom:1px solid var(--line);display:flex;gap:10px"><b style="width:22px;color:'+(ok?'#1B6B47':r[2]?'#C9473A':'#B7791F')+'">'+(ok?'✓':r[2]?'✗':'!')+'</b><span style="flex:1"><b>'+r[0]+'</b><br>'+(ok?esc(r[1]):r[2]?'Wajib diisi':'Belum diisi (disarankan)')+'</span></div>'}).join('')};
 function upStamp(im,f){var w0=im.naturalWidth,h0=im.naturalHeight,w=Math.min(w0,1600),h=Math.round(h0*w/w0),c=document.createElement('canvas');c.width=w;c.height=h;var g=c.getContext('2d');g.drawImage(im,0,0,w,h);
 if($('#ust').checked){var d=new Date(f.lastModified||Date.now()),fs=Math.max(13,Math.round(w/40)),l1=d.toLocaleDateString('id-ID',{day:'2-digit',month:'2-digit',year:'numeric'})+'  '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' '+tz(),l2=('Foto unggahan'+($('#ll').value.trim()?' · '+$('#ll').value.trim():'')).slice(0,70),bh=fs*(2*1.18+.7);g.fillStyle='rgba(0,0,0,.58)';g.fillRect(0,h-bh,w,bh);g.fillStyle='#fff';g.font='600 '+fs+'px sans-serif';g.textBaseline='top';g.fillText(l1,fs*.6,h-bh+fs*.35);g.fillText(l2,fs*.6,h-bh+fs*.35+fs*1.18)}
