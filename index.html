@@ -1076,7 +1076,32 @@ body{background-image:radial-gradient(circle at 100% 0,rgba(255,176,32,.14),tran
 <section id="gate" class="view">
   <style>#gate .bk2{display:none}</style>
   <div class="ahead"><h1 id="gh">Akun Anda</h1><p class="hs">Kanopi</p></div>
-  <div class="main"><div class="card"><p id="gm" style="line-height:1.55"></p><button class="btn" id="gx" type="button" style="margin-top:14px">Keluar</button></div></div>
+  <div class="main"><div class="card"><p id="gm" style="line-height:1.55"></p><button class="btn" id="gn" type="button" style="margin-top:14px;display:none">Buka Nilai Transaksi Ekonomi</button><button class="btn" id="gx" type="button" style="margin-top:14px">Keluar</button></div></div>
+</section>
+
+<section id="nte" class="view">
+  <div class="ahead"><h1>Nilai Transaksi Ekonomi</h1><p class="hs">Catat penjualan hasil hutan kelompok.</p></div>
+  <div class="main">
+    <div class="card"><h3>Catat transaksi</h3>
+      <label for="txKl">Kelompok</label><div class="in"><select id="txKl"></select></div>
+      <label for="txTg">Tanggal</label><div class="in"><input id="txTg" type="date"></div>
+      <label for="txPb">Pembeli (opsional)</label><div class="in"><input id="txPb" placeholder="Nama pembeli atau pengepul"></div>
+      <h3 style="margin-top:16px;font-size:15px">Barang atau jasa</h3>
+      <label for="txKt">Kategori</label><div class="in"><select id="txKt"></select></div>
+      <label for="txPd">Jenis produk</label><div class="in"><select id="txPd"></select></div>
+      <div id="txLw" style="display:none"><label for="txLn">Nama produk (tulis sendiri)</label><div class="in"><input id="txLn"></div></div>
+      <label for="txNs">Nama spesifik (opsional)</label><div class="in"><input id="txNs" placeholder="Contoh: kopi arabika"></div>
+      <label for="txSt">Satuan</label><div class="in"><select id="txSt"></select><input id="txSl" style="display:none" placeholder="Contoh: kg"></div>
+      <label for="txJm">Jumlah</label><div class="in"><input id="txJm" inputmode="decimal" placeholder="0"></div>
+      <label for="txHg">Harga per satuan (Rp)</label><div class="in"><input id="txHg" inputmode="decimal" placeholder="0"></div>
+      <div class="st" id="txNl">Nilai: Rp 0</div>
+      <div class="err" id="txEr" role="alert"></div>
+      <button class="btn" id="txAdd" type="button" style="margin-top:8px">Tambah ke daftar</button>
+      <div id="txBr" style="margin-top:10px"></div>
+      <button class="btn" id="txSv" type="button" style="margin-top:10px;display:none">Simpan transaksi</button>
+    </div>
+    <div class="card"><h3>Transaksi terbaru</h3><div id="txLs" style="margin-top:8px"></div></div>
+  </div>
 </section>
 
 <section id="adm" class="view">
@@ -1373,11 +1398,11 @@ function sbErr(x){if(!x||!x.st)return(x&&x.j&&x.j.message)||'Tidak ada sinyal. C
   if(/already|registered/i.test(m))return'Nama pengguna sudah dipakai. Pilih yang lain.';if(/invalid login|invalid_credentials/i.test(m+(x.j.error_code||'')))return'Nama pengguna atau kata sandi salah.';return m||'Gagal (kode '+x.st+'). Coba lagi.'}
 function toEm(x){x=x.trim().toLowerCase();return x.indexOf('@')>0?x:x.replace(/[^a-z0-9._-]/g,'')+DOM}
 function sbEval(){var p=S&&S.p;GATE=null;if(p){if(p.status!=='aktif')GATE={t:p.status==='menunggu'?'Menunggu persetujuan':'Akun belum aktif',m:p.status==='menunggu'?(p.role==='penyuluh'?'Pendaftaran Anda sebagai penyuluh menunggu persetujuan admin.':'Pendaftaran Anda menunggu persetujuan penyuluh pembina kelompok Anda.')+' Silakan masuk lagi nanti.':'Status akun: '+p.status+'. Hubungi admin.'};
-  else if(p.role==='anggota')GATE={t:'Halo, '+p.nama,m:'Akun Anda sudah aktif. Fitur Nilai Transaksi Ekonomi untuk anggota kelompok segera hadir. Menu Agenda dan Lapor khusus penyuluh.'}}
-  var b=$('#toAdm');if(b)b.style.display=(p&&!GATE&&(p.role==='admin'||p.role==='penyuluh'))?'':'none'}
-var _sh=show;show=function(v){if(GATE&&v!=='login'&&v!=='gate'){$('#gh').textContent=GATE.t;$('#gm').textContent=GATE.m;v='gate'}_sh(v);document.body.classList.toggle('lg',v==='login'||v==='gate');if(v==='adm')admLoad()};
+  else if(p.role==='anggota')GATE={t:'Halo, '+p.nama,m:'Akun Anda sudah aktif. Catat transaksi ekonomi kelompok lewat tombol di bawah. Menu Agenda dan Lapor khusus penyuluh.',nte:true}}
+  var b=$('#toAdm');if(b)b.style.display=(p&&!GATE&&(p.role==='admin'||p.role==='penyuluh'))?'':'none';b=$('#toNte');if(b)b.style.display=(p&&!GATE)?'':'none'}
+var _sh=show;show=function(v){if(GATE&&v!=='login'&&v!=='gate'&&!(v==='nte'&&GATE.nte)){$('#gh').textContent=GATE.t;$('#gm').textContent=GATE.m;$('#gn').style.display=GATE.nte?'':'none';v='gate'}_sh(v);if(v==='nte')txInit();document.body.classList.toggle('lg',v==='login'||v==='gate');if(v==='adm')admLoad()};
 function doOut(){try{localStorage.removeItem('kanopi-sesi')}catch(x){}S=null;sbSave();GATE=null;sbEval();$('#pw').value='';show('login')}
-(function(){var h=$('#home .grid'),b=document.createElement('button');b.type='button';b.className='btn';b.id='toAdm';b.style.cssText='display:none;margin:12px 0';b.textContent='Akun & kelompok';h.parentNode.insertBefore(b,h);b.onclick=function(){show('adm')};$('#gx').onclick=doOut})();
+(function(){var h=$('#home .grid'),b=document.createElement('button');b.type='button';b.className='btn';b.id='toAdm';b.style.cssText='display:none;margin:12px 0';b.textContent='Akun & kelompok';h.parentNode.insertBefore(b,h);b.onclick=function(){show('adm')};var c=document.createElement('button');c.type='button';c.className='btn';c.id='toNte';c.style.cssText='display:none;margin:12px 0';c.textContent='Nilai Transaksi Ekonomi';h.parentNode.insertBefore(c,h);c.onclick=function(){show('nte')};$('#gn').onclick=function(){show('nte')};$('#gx').onclick=doOut})();
 function loadKg(){var q=$('#rKg');sbf('/rest/v1/rpc/daftar_kelompok_publik',{m:'POST',b:{}}).then(function(a){KG=a||[];q.innerHTML=KG.length?'<option value="">Pilih kelompok</option>'+KG.map(function(g){return'<option value="'+g.id+'">'+esc(g.nama+(g.desa?' - '+g.desa:'')+(g.kecamatan?', '+g.kecamatan:''))+'</option>'}).join(''):'<option value="">Belum ada kelompok terdaftar</option>'}).catch(function(){q.innerHTML='<option value="">Gagal memuat (periksa sinyal)</option>'})}
 $('#rRl').onchange=function(){$('#rKw').style.display=this.value==='anggota'?'':'none'};
 function admLoad(){var A=S.p.role==='admin';$('#aK').style.display=A?'':'none';sbTok().then(function(t){return Promise.all([sbf('/rest/v1/profiles?status=eq.menunggu&select=id,nama,username,no_hp,role,group_id&order=created_at',{},t),sbf('/rest/v1/kelompok?select=id,nama,desa',{},t),sbf('/rest/v1/daftar_penyuluh?select=id,nama',{},t)])}).then(function(r){var L=r[0]||[],K={};(r[1]||[]).forEach(function(g){K[g.id]=g.nama+(g.desa?' - '+g.desa:'')});
@@ -1387,6 +1412,27 @@ $('#aL').onclick=function(e){var b=e.target.closest('[data-u]');if(!b)return;var
   sbTok().then(function(t){return sbf('/rest/v1/rpc/'+a[0],{m:'POST',b:a[1]},t)}).then(function(){toast(ok?'Disetujui':'Ditolak');admLoad()}).catch(function(x){b.disabled=false;toast(sbErr(x))})};
 $('#kGo').onclick=function(){var n=$('#kNm').value.trim(),e=$('#kEr');e.textContent='';if(n.length<3){e.textContent='Isi nama kelompok.';return}
   sbTok().then(function(t){return sbf('/rest/v1/kelompok',{m:'POST',h:{Prefer:'return=minimal'},b:{nama:n,desa:$('#kDs').value.trim()||null,kecamatan:$('#kKc').value.trim()||null,kabupaten:$('#kKb').value.trim()||null,penyuluh_id:$('#kPn').value||null,status:'aktif',dibuat_oleh:S.uid}},t)}).then(function(){['#kNm','#kDs','#kKc','#kKb'].forEach(function(q){$(q).value=''});toast('Kelompok tersimpan')}).catch(function(x){e.textContent=x&&x.st===409?'Kelompok dengan nama dan desa itu sudah ada.':sbErr(x)})};
+var CAT=null,TXK=[],TXB=[],TXN=0;
+function fR(n){return'Rp '+Math.round(+n||0).toLocaleString('id-ID')}
+function nm2(v){return parseFloat(String(v).replace(',','.'))}
+function opt(a,f,ph){return(ph?'<option value="">'+ph+'</option>':'')+a.map(f).join('')}
+function txInit(){var P=S.p;$('#txTg').value=today;sbTok().then(function(t){return Promise.all([CAT?0:Promise.all([sbf('/rest/v1/nte_kategori?select=id,nama&aktif=eq.true&order=urutan',{},t),sbf('/rest/v1/nte_produk?select=id,kategori_id,nama,satuan&aktif=eq.true&order=kode',{},t)]).then(function(r){CAT={k:r[0],p:r[1]}}),sbf('/rest/v1/kelompok?select=id,nama,desa,penyuluh_id&status=eq.aktif&order=nama',{},t).then(function(g){TXK=g.filter(function(x){return P.role==='admin'||(P.role==='penyuluh'&&x.penyuluh_id===S.uid)||(P.role==='anggota'&&x.id===P.group_id)})})])}).then(function(){var k=$('#txKl');k.innerHTML=TXK.length?opt(TXK,function(g){return'<option value="'+g.id+'">'+esc(g.nama+(g.desa?' - '+g.desa:''))+'</option>'}):'<option value="">Belum ada kelompok yang Anda bina</option>';$('#txKt').innerHTML=opt(CAT.k,function(c){return'<option value="'+c.id+'">'+esc(c.nama)+'</option>'},'Pilih kategori');txKt();txList()}).catch(function(x){$('#txEr').textContent=sbErr(x)})}
+function txKt(){var id=+$('#txKt').value,a=CAT.p.filter(function(p){return p.kategori_id===id});$('#txPd').innerHTML=id?opt(a,function(p){return'<option value="'+p.id+'">'+esc(p.nama)+'</option>'},'Pilih jenis produk')+'<option value="L">Lainnya (tulis sendiri)</option>':'<option value="">Pilih kategori dulu</option>';txPd()}
+function txPd(){var v=$('#txPd').value,L=v==='L',p=CAT.p.filter(function(x){return String(x.id)===v})[0];$('#txLw').style.display=L?'':'none';$('#txSt').style.display=L?'none':'';$('#txSl').style.display=L?'':'none';$('#txSt').innerHTML=p?p.satuan.map(function(u){return'<option>'+esc(u)+'</option>'}).join(''):'<option value="">-</option>'}
+function txNl(){var j=nm2($('#txJm').value),h=nm2($('#txHg').value);$('#txNl').textContent='Nilai: '+fR(j>=0&&h>=0?j*h:0)}
+$('#txKt').onchange=txKt;$('#txPd').onchange=txPd;$('#txJm').oninput=$('#txHg').oninput=txNl;
+function txDraw(){var T=0;$('#txBr').innerHTML=TXB.map(function(b,i){T+=b.nilai;return'<div style="display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid var(--line)"><div><b>'+esc(b.label)+'</b><div class="st">'+b.jumlah+' '+esc(b.satuan)+' x '+fR(b.harga_satuan)+' = '+fR(b.nilai)+'</div></div><button type="button" class="link" data-x="'+i+'">Hapus</button></div>'}).join('')+(TXB.length?'<div style="padding-top:8px"><b>Total: '+fR(T)+'</b></div>':'');$('#txSv').style.display=TXB.length?'':'none'}
+$('#txBr').onclick=function(e){var b=e.target.closest('[data-x]');if(b){TXB.splice(+b.dataset.x,1);txDraw()}};
+$('#txAdd').onclick=function(){var e=$('#txEr'),pd=$('#txPd').value,L=pd==='L',j=nm2($('#txJm').value),h=nm2($('#txHg').value),sat=L?$('#txSl').value.trim():$('#txSt').value,ln=$('#txLn').value.trim();e.textContent='';
+  if(!$('#txKt').value||!pd){e.textContent='Pilih kategori dan jenis produk.';return}if(L&&(!ln||!sat)){e.textContent='Tulis nama produk dan satuannya.';return}
+  if(!(j>0)||!(h>=0)){e.textContent='Isi jumlah dan harga satuan dengan angka.';return}
+  var p=CAT.p.filter(function(x){return String(x.id)===pd})[0];TXB.push({kategori_id:+$('#txKt').value,produk_id:L?null:+pd,produk_lain:L?ln:null,nama_spesifik:$('#txNs').value.trim()||null,satuan:sat,jumlah:j,harga_satuan:h,nilai:Math.round(j*h*100)/100,label:L?ln:p.nama});
+  ['#txJm','#txHg','#txNs','#txLn','#txSl'].forEach(function(q){$(q).value=''});txNl();txDraw()};
+$('#txSv').onclick=function(){var e=$('#txEr'),k=$('#txKl').value,b=this;e.textContent='';if(!k){e.textContent='Pilih kelompok.';return}if(!TXB.length)return;b.disabled=true;var id=crypto.randomUUID?crypto.randomUUID():null;if(!id){e.textContent='Perangkat tidak mendukung. Perbarui browser.';b.disabled=false;return}
+  var rows=TXB.map(function(x,i){return{transaksi_id:id,urutan:i+1,kategori_id:x.kategori_id,produk_id:x.produk_id,produk_lain:x.produk_lain,nama_spesifik:x.nama_spesifik,satuan:x.satuan,jumlah:x.jumlah,harga_satuan:x.harga_satuan,nilai:x.nilai}}),tk;
+  sbTok().then(function(t){tk=t;return sbf('/rest/v1/nte_transaksi',{m:'POST',h:{Prefer:'return=minimal'},b:{id:id,kelompok_id:k,dibuat_oleh:S.uid,tanggal:$('#txTg').value||today,pembeli:$('#txPb').value.trim()||null,status:'menunggu'}},t)}).then(function(){return sbf('/rest/v1/nte_baris',{m:'POST',h:{Prefer:'return=minimal'},b:rows},tk).catch(function(x){sbf('/rest/v1/nte_transaksi?id=eq.'+id,{m:'PATCH',h:{Prefer:'return=minimal'},b:{status:'dibatalkan'}},tk).catch(function(){});throw x})}).then(function(){TXB=[];$('#txPb').value='';txDraw();toast('Transaksi tersimpan, menunggu verifikasi');b.disabled=false;txList()}).catch(function(x){b.disabled=false;e.textContent=sbErr(x)})};
+function txList(){sbTok().then(function(t){return sbf('/rest/v1/nte_transaksi?select=id,tanggal,pembeli,total,status,kelompok_id,catatan_verifikasi&order=tanggal.desc,created_at.desc&limit=30',{},t)}).then(function(a){var V=S.p.role!=='anggota',K={};TXK.forEach(function(g){K[g.id]=g.nama});$('#txLs').innerHTML=a.length?a.map(function(r){return'<div style="padding:10px 0;border-top:1px solid var(--line)"><b>'+fR(r.total)+'</b> <small>'+esc(r.tanggal)+' · '+esc(r.status)+'</small><div class="st">'+esc(K[r.kelompok_id]||'')+(r.pembeli?' · '+esc(r.pembeli):'')+'</div>'+(V&&r.status==='menunggu'?'<div style="display:flex;gap:8px;margin-top:6px"><button type="button" class="btn" style="padding:9px" data-v="'+r.id+'" data-s="terverifikasi">Verifikasi</button><button type="button" class="btn" style="padding:9px;background:#C0392B" data-v="'+r.id+'" data-s="ditolak">Tolak</button></div>':'')+'</div>'}).join(''):'<div class="st">Belum ada transaksi.</div>'}).catch(function(x){$('#txLs').innerHTML='<div class="err">'+esc(sbErr(x))+'</div>'})}
+$('#txLs').onclick=function(e){var b=e.target.closest('[data-v]');if(!b)return;b.disabled=true;sbTok().then(function(t){return sbf('/rest/v1/nte_transaksi?id=eq.'+b.dataset.v,{m:'PATCH',h:{Prefer:'return=minimal'},b:{status:b.dataset.s}},t)}).then(function(){toast('Tersimpan');txList()}).catch(function(x){b.disabled=false;toast(sbErr(x))})};
 function lgMode(r){reg=r;$('#rgx').style.display=r?'block':'none';$('#lgh').textContent=r?'Buat akun':'Masuk';$('#lgs').textContent=r?'Daftar sekali. Akun disetujui dulu oleh penyuluh pembina atau admin.':'Masuk dengan nama pengguna dan kata sandi Anda.';$('#lgx').textContent=r?'Daftar':'Masuk';$('#lgm').textContent=r?'Sudah punya akun? Masuk':'Belum punya akun? Buat akun';$('#pw').autocomplete=r?'new-password':'current-password';$('#err').textContent='';$('label[for=nm]').textContent=r?'Nama lengkap':'Nama pengguna atau nama lengkap';$('#nm').placeholder=r?'Nama lengkap sesuai identitas':'Nama pengguna';$('#lgm').style.display='';if(r)loadKg()}
 function lgOk(n,rm){try{pr.n=n;localStorage.setItem('kanopi-profil',JSON.stringify(pr));if(rm)localStorage.setItem('kanopi-sesi','1');else localStorage.removeItem('kanopi-sesi')}catch(x){}var ln=$('#ln');if(ln&&!ln.value)ln.value=n;$('#pw').value='';$('#err').textContent='';show('home')}
 $('#lgm').onclick=function(){lgMode(!reg)};
