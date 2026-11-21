@@ -1053,6 +1053,16 @@ body{background-image:radial-gradient(circle at 100% 0,rgba(255,176,32,.14),tran
     <div class="field"><input id="nm" type="text" autocomplete="username" placeholder="Nama lengkap sesuai identitas"></div>
     <div id="emw" style="display:none"><label for="em">Email</label>
     <div class="field"><input id="em" type="email" autocomplete="email" placeholder="nama@email.com"></div></div>
+    <div id="rgx" style="display:none">
+    <label for="rUn">Nama pengguna</label>
+    <div class="field"><input id="rUn" autocapitalize="none" autocomplete="off" placeholder="huruf kecil, angka, titik. Contoh: budi.santoso"></div>
+    <label for="rHp">Nomor HP (opsional)</label>
+    <div class="field"><input id="rHp" inputmode="tel" autocomplete="tel" placeholder="08xxxxxxxxxx"></div>
+    <label for="rRl">Daftar sebagai</label>
+    <div class="field"><select id="rRl"><option value="anggota">Anggota kelompok tani hutan</option><option value="penyuluh">Penyuluh kehutanan</option></select></div>
+    <div id="rKw"><label for="rKg">Kelompok</label>
+    <div class="field"><select id="rKg"><option value="">Memuat…</option></select></div></div>
+    </div>
     <label for="pw">Kata sandi</label>
     <div class="field"><input id="pw" type="password" autocomplete="current-password" placeholder="Minimal 6 karakter"></div>
     <label style="display:flex;gap:8px;align-items:center;font-weight:400"><input type="checkbox" id="rm" checked style="width:auto"> Ingat saya di perangkat ini</label>
@@ -1061,6 +1071,28 @@ body{background-image:radial-gradient(circle at 100% 0,rgba(255,176,32,.14),tran
     <div class="row"><button type="button" class="link" id="lgm">Belum punya akun? Buat akun</button></div>
   </form>
   <p class="foot">Akun dan data disimpan di perangkat ini, lalu dikirim saat ada sinyal. Cadangkan data secara berkala.</p>
+</section>
+
+<section id="gate" class="view">
+  <style>#gate .bk2{display:none}</style>
+  <div class="ahead"><h1 id="gh">Akun Anda</h1><p class="hs">Kanopi</p></div>
+  <div class="main"><div class="card"><p id="gm" style="line-height:1.55"></p><button class="btn" id="gx" type="button" style="margin-top:14px">Keluar</button></div></div>
+</section>
+
+<section id="adm" class="view">
+  <div class="ahead"><h1>Akun &amp; kelompok</h1><p class="hs">Setujui pendaftar dan kelola kelompok.</p></div>
+  <div class="main">
+    <div class="card"><h3>Menunggu persetujuan <span id="aN"></span></h3><div id="aL" style="margin-top:8px"></div></div>
+    <div class="card" id="aK"><h3>Tambah kelompok</h3>
+      <label for="kNm">Nama kelompok</label><div class="in"><input id="kNm"></div>
+      <label for="kDs">Desa</label><div class="in"><input id="kDs"></div>
+      <label for="kKc">Kecamatan</label><div class="in"><input id="kKc"></div>
+      <label for="kKb">Kabupaten</label><div class="in"><input id="kKb"></div>
+      <label for="kPn">Penyuluh pembina</label><div class="in"><select id="kPn"><option value="">Belum ditentukan</option></select></div>
+      <div class="err" id="kEr" role="alert"></div>
+      <button class="btn" id="kGo" type="button">Simpan kelompok</button>
+    </div>
+  </div>
 </section>
 
 <section id="home" class="view">
@@ -1328,20 +1360,49 @@ function show(v){rt();CV=v;gv(v);if(v!=='login'&&location.hash!=='#'+v)try{locat
 ['#k1','#k2','#k3'].forEach(function(q){var i=$(q);if(!i)return;i.addEventListener('input',function(){var a=i.selectionStart,b=i.selectionEnd,v=i.value.toLocaleUpperCase('id-ID');if(v!==i.value){i.value=v;try{i.setSelectionRange(a,b)}catch(x){}}});i.value=i.value.toLocaleUpperCase('id-ID')});
 var AK=null,reg=false;try{AK=JSON.parse(localStorage.getItem('kanopi-akun')||'null')}catch(e){}
 function hp(w,t){var e=new TextEncoder();return crypto.subtle.importKey('raw',e.encode(w),'PBKDF2',false,['deriveBits']).then(function(k){return crypto.subtle.deriveBits({name:'PBKDF2',salt:e.encode(t),iterations:100000,hash:'SHA-256'},k,256)}).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return('0'+x.toString(16)).slice(-2)}).join('')})}
-function lgMode(r){reg=r;$('#emw').style.display=r?'block':'none';$('#lgh').textContent=r?'Buat akun':'Masuk';$('#lgs').textContent=r?'Daftar sekali, berikutnya cukup masuk dengan nama lengkap dan kata sandi.':'Masuk dengan nama lengkap dan kata sandi Anda.';$('#lgx').textContent=r?'Daftar':'Masuk';$('#lgm').textContent=r?'Sudah punya akun? Masuk':'Belum punya akun? Buat akun';$('#pw').autocomplete=r?'new-password':'current-password';$('#err').textContent='';if(r&&!$('#em').value)$('#em').value=pr.e||'';$('#lgm').style.display=(!r&&!AK)?'none':'';}
+var SBU='https://jnbjcggfuuukqwnwgqcr.supabase.co',SBK='sb_publishable_AWQLxO-0puaSE0pmyh3IgA_fz7DIUwN',DOM='@kanopi.app',S=null,GATE=null,KG=[];
+try{S=JSON.parse(localStorage.getItem('kanopi-sb')||'null')}catch(e){}
+function sbSave(){try{if(S)localStorage.setItem('kanopi-sb',JSON.stringify(S));else localStorage.removeItem('kanopi-sb')}catch(e){}}
+function sbf(p,o,t){o=o||{};var h={apikey:SBK,'Content-Type':'application/json'};if(t)h.Authorization='Bearer '+t;if(o.h)Object.assign(h,o.h);
+  return fetch(SBU+p,{method:o.m||'GET',headers:h,body:o.b?JSON.stringify(o.b):undefined}).then(function(r){return r.text().then(function(x){var j=null;try{j=x?JSON.parse(x):null}catch(e){}if(!r.ok)throw{st:r.status,j:j||{}};return j})})}
+function sbSes(j){S={at:j.access_token,rt:j.refresh_token,exp:Date.now()+j.expires_in*1000,uid:j.user.id,p:S&&S.p||null};sbSave()}
+function sbTok(){if(!S)return Promise.reject({st:401,j:{}});if(Date.now()<S.exp-60000)return Promise.resolve(S.at);
+  return sbf('/auth/v1/token?grant_type=refresh_token',{m:'POST',b:{refresh_token:S.rt}}).then(function(j){sbSes(j);return S.at})}
+function sbProf(){return sbTok().then(function(t){return sbf('/rest/v1/profiles?id=eq.'+S.uid+'&select=role,status,nama,username,group_id',{},t)}).then(function(a){var p=a&&a[0];if(!p)throw{st:0,j:{message:'Profil akun belum ada. Hubungi admin.'}};S.p=p;sbSave();return p})}
+function sbErr(x){if(!x||!x.st)return(x&&x.j&&x.j.message)||'Tidak ada sinyal. Coba lagi saat online.';var m=x.j.msg||x.j.error_description||x.j.message||'';
+  if(/already|registered/i.test(m))return'Nama pengguna sudah dipakai. Pilih yang lain.';if(/invalid login|invalid_credentials/i.test(m+(x.j.error_code||'')))return'Nama pengguna atau kata sandi salah.';return m||'Gagal (kode '+x.st+'). Coba lagi.'}
+function toEm(x){x=x.trim().toLowerCase();return x.indexOf('@')>0?x:x.replace(/[^a-z0-9._-]/g,'')+DOM}
+function sbEval(){var p=S&&S.p;GATE=null;if(p){if(p.status!=='aktif')GATE={t:p.status==='menunggu'?'Menunggu persetujuan':'Akun belum aktif',m:p.status==='menunggu'?(p.role==='penyuluh'?'Pendaftaran Anda sebagai penyuluh menunggu persetujuan admin.':'Pendaftaran Anda menunggu persetujuan penyuluh pembina kelompok Anda.')+' Silakan masuk lagi nanti.':'Status akun: '+p.status+'. Hubungi admin.'};
+  else if(p.role==='anggota')GATE={t:'Halo, '+p.nama,m:'Akun Anda sudah aktif. Fitur Nilai Transaksi Ekonomi untuk anggota kelompok segera hadir. Menu Agenda dan Lapor khusus penyuluh.'}}
+  var b=$('#toAdm');if(b)b.style.display=(p&&!GATE&&(p.role==='admin'||p.role==='penyuluh'))?'':'none'}
+var _sh=show;show=function(v){if(GATE&&v!=='login'&&v!=='gate'){$('#gh').textContent=GATE.t;$('#gm').textContent=GATE.m;v='gate'}_sh(v);document.body.classList.toggle('lg',v==='login'||v==='gate');if(v==='adm')admLoad()};
+function doOut(){try{localStorage.removeItem('kanopi-sesi')}catch(x){}S=null;sbSave();GATE=null;sbEval();$('#pw').value='';show('login')}
+(function(){var h=$('#home .grid'),b=document.createElement('button');b.type='button';b.className='btn';b.id='toAdm';b.style.cssText='display:none;margin:12px 0';b.textContent='Akun & kelompok';h.parentNode.insertBefore(b,h);b.onclick=function(){show('adm')};$('#gx').onclick=doOut})();
+function loadKg(){var q=$('#rKg');sbf('/rest/v1/rpc/daftar_kelompok_publik',{m:'POST',b:{}}).then(function(a){KG=a||[];q.innerHTML=KG.length?'<option value="">Pilih kelompok</option>'+KG.map(function(g){return'<option value="'+g.id+'">'+esc(g.nama+(g.desa?' - '+g.desa:'')+(g.kecamatan?', '+g.kecamatan:''))+'</option>'}).join(''):'<option value="">Belum ada kelompok terdaftar</option>'}).catch(function(){q.innerHTML='<option value="">Gagal memuat (periksa sinyal)</option>'})}
+$('#rRl').onchange=function(){$('#rKw').style.display=this.value==='anggota'?'':'none'};
+function admLoad(){var A=S.p.role==='admin';$('#aK').style.display=A?'':'none';sbTok().then(function(t){return Promise.all([sbf('/rest/v1/profiles?status=eq.menunggu&select=id,nama,username,no_hp,role,group_id&order=created_at',{},t),sbf('/rest/v1/kelompok?select=id,nama,desa',{},t),sbf('/rest/v1/daftar_penyuluh?select=id,nama',{},t)])}).then(function(r){var L=r[0]||[],K={};(r[1]||[]).forEach(function(g){K[g.id]=g.nama+(g.desa?' - '+g.desa:'')});
+  $('#aN').textContent=L.length+' orang';$('#aL').innerHTML=L.length?L.map(function(u){return'<div style="padding:10px 0;border-top:1px solid var(--line)"><b>'+esc(u.nama)+'</b> <small>('+esc(u.username)+')</small><div class="st">'+(u.role==='penyuluh'?'Penyuluh':'Anggota: '+esc(K[u.group_id]||'-'))+(u.no_hp?' · '+esc(u.no_hp):'')+'</div><div style="display:flex;gap:8px;margin-top:6px"><button type="button" class="btn" style="padding:9px" data-u="'+u.id+'" data-r="'+u.role+'" data-o="1">Setujui</button><button type="button" class="btn" style="padding:9px;background:#C0392B" data-u="'+u.id+'" data-r="'+u.role+'" data-o="0">Tolak</button></div></div>'}).join(''):'<div class="st">Tidak ada pendaftar yang menunggu.</div>';
+  if(A)$('#kPn').innerHTML='<option value="">Belum ditentukan</option>'+(r[2]||[]).map(function(p){return'<option value="'+p.id+'">'+esc(p.nama)+'</option>'}).join('')}).catch(function(x){$('#aL').innerHTML='<div class="err">'+esc(sbErr(x))+'</div>'})}
+$('#aL').onclick=function(e){var b=e.target.closest('[data-u]');if(!b)return;var ok=b.dataset.o==='1',a=b.dataset.r==='penyuluh'?['admin_atur_pengguna',{p_user:b.dataset.u,p_role:'penyuluh',p_status:ok?'aktif':'ditolak'}]:['setujui_anggota',{p_user:b.dataset.u,p_setuju:ok}];b.disabled=true;
+  sbTok().then(function(t){return sbf('/rest/v1/rpc/'+a[0],{m:'POST',b:a[1]},t)}).then(function(){toast(ok?'Disetujui':'Ditolak');admLoad()}).catch(function(x){b.disabled=false;toast(sbErr(x))})};
+$('#kGo').onclick=function(){var n=$('#kNm').value.trim(),e=$('#kEr');e.textContent='';if(n.length<3){e.textContent='Isi nama kelompok.';return}
+  sbTok().then(function(t){return sbf('/rest/v1/kelompok',{m:'POST',h:{Prefer:'return=minimal'},b:{nama:n,desa:$('#kDs').value.trim()||null,kecamatan:$('#kKc').value.trim()||null,kabupaten:$('#kKb').value.trim()||null,penyuluh_id:$('#kPn').value||null,status:'aktif',dibuat_oleh:S.uid}},t)}).then(function(){['#kNm','#kDs','#kKc','#kKb'].forEach(function(q){$(q).value=''});toast('Kelompok tersimpan')}).catch(function(x){e.textContent=x&&x.st===409?'Kelompok dengan nama dan desa itu sudah ada.':sbErr(x)})};
+function lgMode(r){reg=r;$('#rgx').style.display=r?'block':'none';$('#lgh').textContent=r?'Buat akun':'Masuk';$('#lgs').textContent=r?'Daftar sekali. Akun disetujui dulu oleh penyuluh pembina atau admin.':'Masuk dengan nama pengguna dan kata sandi Anda.';$('#lgx').textContent=r?'Daftar':'Masuk';$('#lgm').textContent=r?'Sudah punya akun? Masuk':'Belum punya akun? Buat akun';$('#pw').autocomplete=r?'new-password':'current-password';$('#err').textContent='';$('label[for=nm]').textContent=r?'Nama lengkap':'Nama pengguna atau nama lengkap';$('#nm').placeholder=r?'Nama lengkap sesuai identitas':'Nama pengguna';$('#lgm').style.display='';if(r)loadKg()}
 function lgOk(n,rm){try{pr.n=n;localStorage.setItem('kanopi-profil',JSON.stringify(pr));if(rm)localStorage.setItem('kanopi-sesi','1');else localStorage.removeItem('kanopi-sesi')}catch(x){}var ln=$('#ln');if(ln&&!ln.value)ln.value=n;$('#pw').value='';$('#err').textContent='';show('home')}
 $('#lgm').onclick=function(){lgMode(!reg)};
-$('#f').addEventListener('submit',function(){var nm=$('#nm').value.trim(),pw=$('#pw').value,e=$('#err'),rm=$('#rm').checked;
-  if(nm.length<3){e.textContent='Isi nama lengkap Anda (minimal 3 huruf).';$('#nm').focus();return}
-  if(!(window.crypto&&crypto.subtle)){e.textContent='Perangkat ini tidak mendukung penyimpanan sandi aman. Buka aplikasi lewat alamat https.';return}
-  if(reg){var em=$('#em').value.trim();if(!/^\S+@\S+\.\S+$/.test(em)){e.textContent='Isi email dengan format yang benar, misalnya nama@email.com.';$('#em').focus();return}
-    if(pw.length<6){e.textContent='Kata sandi minimal 6 karakter.';$('#pw').focus();return}
-    var t=uid()+uid();hp(pw,t).then(function(h){AK={n:nm,e:em,t:t,h:h};try{localStorage.setItem('kanopi-akun',JSON.stringify(AK))}catch(x){e.textContent='Penyimpanan penuh. Akun belum tersimpan.';return}pr.e=em;toast('Akun dibuat. Selamat bekerja!');lgOk(nm,rm)})}
-  else{if(!AK){lgMode(true);e.textContent='Belum ada akun di perangkat ini. Silakan buat akun.';return}
-    if(!pw){e.textContent='Kata sandi belum diisi.';$('#pw').focus();return}
-    hp(pw,AK.t).then(function(h){if(AK.n.toLowerCase()!==nm.toLowerCase()||h!==AK.h){e.textContent='Nama lengkap atau kata sandi salah.';return}lgOk(AK.n,rm)})}});
-window.addEventListener('load',function(){try{$('#nm').value=AK?AK.n:(pr.n||'');lgMode(!AK);if(!AK&&pr.e)$('#em').value=pr.e;if(AK&&localStorage.getItem('kanopi-sesi')==='1')show('home')}catch(x){console.error(x)}});
-$('#out').onclick=function(){try{localStorage.removeItem('kanopi-sesi')}catch(x){}$('#pw').value='';show('login')};
+$('#f').addEventListener('submit',function(){var nm=$('#nm').value.trim(),pw=$('#pw').value,e=$('#err'),rm=$('#rm').checked,b=$('#lgx');e.textContent='';
+  if(nm.length<3){e.textContent='Isi nama pengguna atau nama lengkap (minimal 3 huruf).';$('#nm').focus();return}
+  if(pw.length<6){e.textContent='Kata sandi minimal 6 karakter.';$('#pw').focus();return}
+  var end=function(m){b.disabled=false;if(m)e.textContent=m},fin=function(){b.disabled=false;sbEval();lgOk(S.p.nama,rm)};b.disabled=true;
+  if(reg){var un=$('#rUn').value.trim().toLowerCase(),rl=$('#rRl').value,kg=$('#rKg').value;
+    if(!/^[a-z0-9._-]{3,30}$/.test(un)){end('Nama pengguna 3 sampai 30 karakter: huruf kecil, angka, titik, strip.');return}
+    if(rl==='anggota'&&!kg){end('Pilih kelompok Anda.');return}
+    sbf('/auth/v1/signup',{m:'POST',b:{email:un+DOM,password:pw,data:{username:un,nama:nm,no_hp:$('#rHp').value.trim(),minta_peran:rl,group_id:rl==='anggota'?kg:''}}}).then(function(j){if(!j||!j.access_token)throw{st:400,j:{msg:'Akun terbuat tetapi belum bisa langsung masuk. Coba masuk.'}};S=null;sbSes(j);return sbProf()}).then(function(){toast('Pendaftaran terkirim');fin()}).catch(function(x){S=null;sbSave();end(sbErr(x))})}
+  else{sbf('/auth/v1/token?grant_type=password',{m:'POST',b:{email:toEm(nm),password:pw}}).then(function(j){S=null;sbSes(j);return sbProf()}).then(fin).catch(function(x){S=null;sbSave();
+    if(AK&&AK.n.toLowerCase()===nm.toLowerCase()&&window.crypto&&crypto.subtle){hp(pw,AK.t).then(function(h){if(h!==AK.h){end('Nama pengguna atau kata sandi salah.');return}b.disabled=false;sbEval();toast('Masuk dengan akun lama di perangkat ini');lgOk(AK.n,rm)})}else end(sbErr(x))})}});
+window.addEventListener('load',function(){try{$('#nm').value=(S&&S.p?S.p.username:AK?AK.n:pr.n)||'';lgMode(false);
+  if(localStorage.getItem('kanopi-sesi')==='1'){if(S&&S.p){sbEval();lgOk(S.p.nama,true);sbProf().then(function(){var g=GATE;sbEval();if(GATE||g)show(GATE?'gate':'home')}).catch(function(x){if(x&&(x.st===400||x.st===401||x.st===403)){S=null;sbSave();sbEval();show('login')}})}else if(AK)show('home')}}catch(x){console.error(x)}});
+$('#out').onclick=doOut;
 $('#toAg').onclick=function(){cur=today;show('agenda')};
 document.querySelectorAll('.nav button[data-v]').forEach(function(b){b.onclick=function(){if(b.dataset.v==='agenda')cur=today;show(b.dataset.v)}});
 function ico(t){var c=tc(t);return '<span class="ico" style="background:'+c[0]+'"><svg width="22" height="22" viewBox="0 0 24 24"><path d="'+c[1]+'"/></svg></span>'}
