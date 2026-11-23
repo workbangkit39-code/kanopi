@@ -1,7 +1,7 @@
-const V='kanopi-v43',CORE=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png'],
+const V='kanopi-v44',CORE=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png'],
 EXT=['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(CORE).then(()=>Promise.all(EXT.map(u=>fetch(new Request(u,{mode:'no-cors'})).then(r=>c.put(u,r)).catch(()=>{}))))).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
-self.addEventListener('fetch',e=>{const r=e.request,u=new URL(r.url);if(r.method!=='GET'||u.hostname.endsWith('supabase.co')||u.hostname==='api.open-meteo.com'||u.hostname==='nominatim.openstreetmap.org'||u.hostname==='api.bigdatacloud.net')return;
+self.addEventListener('fetch',e=>{const r=e.request,u=new URL(r.url);if(r.method!=='GET'||u.hostname.endsWith('supabase.co')||u.hostname==='api.open-meteo.com'||u.hostname==='nominatim.openstreetmap.org'||u.hostname==='api.bigdatacloud.net'||(r.destination==='image'&&r.mode==='cors'))return;
 e.respondWith(caches.match(r).then(h=>{const n=fetch(r).then(res=>{if(res&&(res.ok||res.type==='opaque'))caches.open(V).then(c=>c.put(r,res.clone()));return res}).catch(()=>h||(r.mode==='navigate'?caches.match('index.html'):undefined));return h||n}))});
