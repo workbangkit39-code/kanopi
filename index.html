@@ -149,9 +149,9 @@ body:not(.lg) .nav{display:flex}
 .pg{position:relative;width:21cm;height:29.68cm;background:#fff;color:#000;box-sizing:border-box;padding:0;overflow:hidden;font:12pt/1.45 "Times New Roman",Times,"Liberation Serif","Nimbus Roman",serif;text-align:justify}
 .pg .pbd{position:absolute;left:2.5cm;right:2.5cm;top:1.2cm;bottom:2.4cm;margin:0;padding:0;overflow:hidden}
 .pg .ft{position:absolute;left:2.5cm;right:2.5cm;bottom:1.2cm;border-top:.75pt solid #000;padding-top:3pt;display:flex;justify-content:space-between;font-size:9.5pt}
-.pg .kop{display:flex;align-items:center;gap:8pt;border-bottom:3px double #000;padding-bottom:5pt;margin:0 0 10pt;text-align:center}
-.pg .kop img{width:1.9cm;height:1.9cm;object-fit:contain;flex:none}
-.pg .kt{flex:1;min-width:0;line-height:1.2}
+.pg .kop{display:flex;align-items:center;gap:11pt;border-bottom:3px double #000;padding-bottom:7pt;margin:0 0 12pt;text-align:center}
+.pg .kop img{height:2cm;width:auto;max-width:2.8cm;object-fit:contain;flex:none;display:block}
+.pg .kt{flex:1;min-width:0;line-height:1.25;display:flex;flex-direction:column;justify-content:center}
 .pg .kt div{white-space:nowrap;overflow:hidden}
 .pg .k1,.pg .k2{font-weight:700;font-size:15pt;text-transform:uppercase}
 .pg .k3{font-weight:400;font-size:11pt;text-transform:none}
@@ -1903,9 +1903,10 @@ function fitKop(p){var a=p.querySelector('.k1'),b=p.querySelector('.k2'),c=p.que
   a.style.fontSize=b.style.fontSize=z+'pt';
   while(!(ok(a)&&ok(b))&&z>11){z-=.25;a.style.fontSize=b.style.fontSize=z+'pt'}
   if(!(ok(a)&&ok(b)))[a,b].forEach(function(e){e.style.whiteSpace='normal';e.style.overflow='visible'});
-  var t=Math.min(11,z-2.5);c.style.fontSize=t+'pt';
+  var t=Math.min(10.5,z-3);c.style.fontSize=t+'pt';
   while(!ok(c)&&t>8){t-=.25;c.style.fontSize=t+'pt'}
-  if(!ok(c)){c.style.whiteSpace='normal';c.style.overflow='visible'}}
+  if(!ok(c)){c.style.whiteSpace='normal';c.style.overflow='visible'}
+  var im=p.querySelector('.kop img'),kt=p.querySelector('.kt');if(im&&kt){im.style.height='auto';var th=kt.getBoundingClientRect().height;if(th>20)im.style.height=Math.round(th)+'px'}}
 function render(u){var j=$('#lj').value.trim()||'(judul kegiatan)',jn=jt(),lk=$('#ll').value.trim(),dv=$('#ld').value||today,d=new Date(dv+'T00:00:00'),
   tg=d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),tp=d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}),hs=rapi($('#lh').value),B=[],L='ABCDEFGH',k=0,
   lc=function(s){return /^[A-Z][a-z]/.test(s)?s.charAt(0).toLowerCase()+s.slice(1):s};
@@ -1913,7 +1914,7 @@ function render(u){var j=$('#lj').value.trim()||'(judul kegiatan)',jn=jt(),lk=$(
   li=function(a){return a.map(function(x,i){return '<div class="li"><b>'+(i+1)+'.</b><span>'+esc(x)+'</span></div>'})};
   if(!u.length)u=['(uraian kegiatan belum diisi)'];
   var co=$('#la').value&&$('#lo').value?esc($('#la').value+', '+$('#lo').value)+(acc!==''?' (akurasi ±'+acc+' m)':''):'-';
-  B.push('<div class="kop">'+(pr.l?'<img src="'+pr.l+'" alt="">':'')+'<div class="kt"><div class="k1">'+esc((pr.a||'Nama instansi').toLocaleUpperCase('id-ID'))+'</div><div class="k2">'+esc((pr.b||'Unit kerja').toLocaleUpperCase('id-ID'))+'</div><div class="k3">'+esc(pr.c||'Alamat instansi')+'</div></div>'+(pr.l?'<div style="width:1.9cm;flex:none"></div>':'')+'</div>');
+  B.push('<div class="kop">'+(pr.l?'<img src="'+pr.l+'" alt="">':'')+'<div class="kt"><div class="k1">'+esc((pr.a||'Nama instansi').toLocaleUpperCase('id-ID'))+'</div><div class="k2">'+esc((pr.b||'Unit kerja').toLocaleUpperCase('id-ID'))+'</div><div class="k3">'+esc(pr.c||'Alamat instansi')+'</div></div>'+'</div>');
   B.push('<div class="tl">LAPORAN KEGIATAN PENYULUHAN KEHUTANAN</div><div style="text-align:center;margin-bottom:4pt">'+esc(jn)+'</div>');
   var dd=function(v){return v?esc(v):'-'};
   sec('Data Diri',['<table><tr><td>Nama</td><td class="cl">:</td><td>'+dd(pr.n)+'</td></tr><tr><td>NIP</td><td class="cl">:</td><td>'+dd(pr.p)+'</td></tr><tr><td>Pangkat/Golongan</td><td class="cl">:</td><td>'+dd(pr.pg)+'</td></tr><tr><td>Jabatan</td><td class="cl">:</td><td>'+dd(pr.jb)+'</td></tr><tr><td>Unit Kerja</td><td class="cl">:</td><td>'+dd(pr.uk)+'</td></tr></table>']);
