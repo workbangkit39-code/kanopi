@@ -2202,7 +2202,7 @@ $('#tdsv').onclick=function(){var er=$('#tde'),cat=$('#tdc').value;if(!tw){er.te
   TD.unshift({id:id,k:tk,c:cat,n:$('#tdn').value.trim()||'Titik '+(TD.length+1),a:$('#tdl').value.trim(),t:$('#tdt').value.trim(),la:(+tw.la).toFixed(6),lo:(+tw.lo).toFixed(6),ac:tw.ac,al:tw.al==null?null:tw.al,tp:tpo?tpo.tp:'',rh:tpo?tpo.rh:'',pl:(tpo&&tpo.pl)||(tw.src==='gps'&&window.PLACE?PLACE():''),ds:wGet('td').ds,kc:wGet('td').kc,kb:wGet('td').kb,src:tw.src,dt:dt,d:q.d,h:q.h,pk:pk});
   wSave(wGet('td'));sv2();tpo=null;tw=null;slot($('#tdsl'),null);clear(['#tdn','#tdl','#tdt','#tdo']);tcs();tdlk();drawT();drawTM();toast('Tanda lokasi disimpan. Terima kasih sudah mencatat!')};
 function drawT(){$('#tdcn').textContent=TD.length;$('#tdls').innerHTML=TD.length?TD.map(function(x){var c=x.k==='Potensi'?'var(--pri)':'#C9473A';
-  return '<div class="it"><div class="hd" style="cursor:default">'+im(x.pk)+'<div class="tx"><div class="tt">'+esc(x.n)+'</div><div class="mt"><b style="color:'+c+'">'+esc(x.k+' · '+x.c)+'</b></div><div class="mt">'+fd(x.d)+' '+x.h+' · '+(x.ac!==''&&x.ac!=null?'±'+x.ac+' m':'akurasi -')+(x.al!=null?' · Elv '+Math.round(x.al)+' m':'')+'</div><div class="mt">'+x.la+', '+x.lo+'</div>'+(wl(x)?'<div class="mt">🏘 '+esc(wl(x))+'</div>':'')+(x.pl?'<div class="mt">📍 '+esc(x.pl)+'</div>':'')+(x.a?'<div class="mt">'+esc(x.a)+' ha</div>':'')+(x.t?'<div class="mt">'+esc(x.t)+'</div>':'')+'</div></div><div class="row" style="padding:0 14px 12px">'+(x.pk?'<button type="button" class="link" data-f="'+x.id+'">Foto</button>':'')+'<button type="button" class="link del" data-d="'+x.id+'">Hapus</button></div></div>'}).join(''):'<div class="empty"><b>Belum ada tanda</b>Tandai potensi atau lahan kritis saat Anda berada di lokasi.</div>'}
+  return '<div class="it"><div class="hd" style="cursor:default">'+im(x.pk)+'<div class="tx"><div class="tt">'+esc(x.n)+'</div><div class="mt"><b style="color:'+c+'">'+esc(x.k+' · '+x.c)+'</b></div><div class="mt">'+fd(x.d)+' '+x.h+' · '+(x.ac!==''&&x.ac!=null?'±'+x.ac+' m':'akurasi -')+(x.al!=null?' · Elv '+Math.round(x.al)+' m':'')+'</div><div class="mt">'+x.la+', '+x.lo+'</div>'+(wl(x)?'<div class="mt">🏘 '+esc(wl(x))+'</div>':'')+(x.pl?'<div class="mt">📍 '+esc(x.pl)+'</div>':'')+(x.a?'<div class="mt">'+esc(x.a)+' ha</div>':'')+(x.t?'<div class="mt">'+esc(x.t)+'</div>':'')+'</div></div><div class="row" style="padding:0 14px 12px">'+(x.pk?'<button type="button" class="link" data-f="'+x.id+'">Foto</button>':'')+'<button type="button" class="link" data-e="'+x.id+'">Ubah</button><button type="button" class="link del" data-d="'+x.id+'">Hapus</button></div></div>'}).join(''):'<div class="empty"><b>Belum ada tanda</b>Tandai potensi atau lahan kritis saat Anda berada di lokasi.</div>'}
 function rpv(x,pk){pvShow({u:MEM[pk],la:x.la,lo:x.lo,ac:x.ac,al:x.al,dt:x.dt||Date.now(),tp:x.tp,rh:x.rh},'view')}
 $('#tdls').onclick=function(e){var b=e.target.closest('[data-f],[data-d]');if(!b)return;if(b.dataset.f){var x=TD.filter(function(k){return k.id===b.dataset.f})[0];if(x&&MEM[x.pk])rpv(x,x.pk);return}
   var i=TD.findIndex(function(x){return x.id===b.dataset.d}),x=TD[i];TD.splice(i,1);sv2();drawT();drawTM();toast('Tanda dihapus',{t:'Batalkan',f:function(){TD.splice(i,0,x);sv2();drawT();drawTM()}})};
@@ -2215,8 +2215,8 @@ $('#nb').onclick=function(){clear(['#nj','#ng','#nl']);$('#ne').textContent='';n
 $('#nsv').onclick=function(){var er=$('#ne');if(!npo){er.textContent='Ambil foto geotag. Akurasi GPS harus 10 m atau lebih baik.';return}er.textContent='';
   var id=uid(),q=dh(npo.dt);kset('p:'+id,npo.u);TN.unshift({id:id,j:$('#nj').value.trim(),tg:$('#ng').value,lk:$('#nl').value.trim(),la:npo.la,lo:npo.lo,ac:npo.ac,al:npo.al,tp:npo.tp,rh:npo.rh,pl:npo.pl||'',ds:wGet('n').ds,kc:wGet('n').kc,kb:wGet('n').kb,dt:npo.dt,d:q.d,h:q.h,pk:'p:'+id,log:[]});wSave(wGet('n'));sv2();$('#ovn').classList.remove('on');drawN();toast('Tanaman tersimpan. Semoga tumbuh subur!')};
 function drawN(){$('#nls').innerHTML=TN.length?TN.map(function(x){var l=x.log[x.log.length-1];
-  return '<div class="it" data-id="'+x.id+'"><div class="hd" style="cursor:default">'+im(x.pk)+'<div class="tx"><div class="tt">'+esc(x.j||'Tanaman tanpa nama')+'</div><div class="mt">Foto '+fd(x.d||x.tg)+' '+(x.h||'')+(x.tg?' · ditanam '+fd(x.tg):'')+(x.lk?' · '+esc(x.lk):'')+'</div>'+(wl(x)?'<div class="mt">🏘 '+esc(wl(x))+'</div>':'')+'<div class="mt">'+x.la+', '+x.lo+' · ±'+x.ac+' m'+(x.al!=null?' · Elv '+Math.round(x.al)+' m':'')+'</div>'+(l?'<div class="mt">Terakhir: '+esc(l.k)+(l.t!==''&&l.t!=null?' · '+l.t+' cm':'')+'</div>':'')+'</div></div>'+
-  '<div class="row" style="padding:0 14px 12px"><button type="button" class="link" data-m="'+x.id+'">+ Pemantauan</button><button type="button" class="link" data-f="'+x.id+'">Foto</button><button type="button" class="link" data-r="'+x.id+'">Riwayat ('+x.log.length+')</button><button type="button" class="link del" data-d="'+x.id+'">Hapus</button></div>'+
+  return '<div class="it" data-id="'+x.id+'"><div class="hd" style="cursor:default">'+im(x.pk)+'<div class="tx"><div class="tt">'+esc(x.j||'Tanaman tanpa nama')+'</div><div class="mt">Foto '+fd(x.d||x.tg)+' '+(x.h||'')+(x.tg?' · ditanam '+fd(x.tg):'')+(x.lk?' · '+esc(x.lk):'')+'</div>'+(wl(x)?'<div class="mt">🏘 '+esc(wl(x))+'</div>':'')+'<div class="mt">'+x.la+', '+x.lo+(x.ac!==''&&x.ac!=null?' · ±'+x.ac+' m':'')+(x.al!=null?' · Elv '+Math.round(x.al)+' m':'')+'</div>'+(l?'<div class="mt">Terakhir: '+esc(l.k)+(l.t!==''&&l.t!=null?' · '+l.t+' cm':'')+'</div>':'')+'</div></div>'+
+  '<div class="row" style="padding:0 14px 12px"><button type="button" class="link" data-m="'+x.id+'">+ Pemantauan</button><button type="button" class="link" data-f="'+x.id+'">Foto</button><button type="button" class="link" data-r="'+x.id+'">Riwayat ('+x.log.length+')</button><button type="button" class="link" data-e="'+x.id+'">Ubah</button><button type="button" class="link del" data-d="'+x.id+'">Hapus</button></div>'+
   '<div class="dt" style="padding-left:14px">'+(x.log.length?x.log.slice().reverse().map(function(g){return '<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">'+(g.pk?im(g.pk):'')+'<div class="mt" style="margin:0">'+fd(g.d)+' '+(g.h||'')+(g.t!==''&&g.t!=null?' · '+g.t+' cm':'')+' · '+esc(g.k)+(g.c?' · '+esc(g.c):'')+'</div></div>'}).join(''):'<p>Belum ada pemantauan.</p>')+'</div></div>'}).join(''):'<div class="empty"><b>Belum ada tanaman</b>Daftarkan tanaman dengan foto geotag, lalu pantau pertumbuhannya dari waktu ke waktu.</div>'}
 $('#nls').onclick=function(e){var b=e.target.closest('[data-m],[data-r],[data-d],[data-f]');if(!b)return;
   if(b.dataset.r){b.closest('.it').classList.toggle('open');return}
@@ -2611,8 +2611,9 @@ function LV(el,o){var m=mkMap(el,saved()),lay=L.layerGroup().addTo(m),S={m:m,fit
  LVS.push(S);return S}
 function pts(f){var a=[];if(f.d)window.TD.forEach(function(x){var la=+x.la,lo=+x.lo;if(isFinite(la)&&isFinite(lo))a.push({id:x.id,k:x.k==='Potensi'?'p':'l',la:la,lo:lo,n:x.n,s:'d'})});if(f.n)window.TN.forEach(function(x){var la=+x.la,lo=+x.lo;if(isFinite(la)&&isFinite(lo))a.push({id:x.id,k:'n',la:la,lo:lo,n:x.j||'Tanaman',s:'n'})});return a}
 function card(p,host,V){var s=p.s==='d',x=(s?window.TD:window.TN).filter(function(k){return k.id===p.id})[0];if(!x){host.innerHTML='';return}var ac=x.ac!==''&&x.ac!=null?'±'+x.ac+' m':'akurasi -',nm=s?x.n:(x.j||'Tanaman tanpa nama'),kt=s?x.k+' · '+x.c:'Tanaman';
- host.innerHTML='<div class="it" style="margin-top:12px"><div class="hd" style="cursor:default">'+window.im(x.pk)+'<div class="tx"><div class="tt">'+window.esc(nm)+'</div><div class="mt"><b>'+window.esc(kt)+'</b></div><div class="mt">'+x.la+', '+x.lo+' · '+ac+(x.al!=null?' · Elv '+Math.round(x.al)+' m':'')+'</div>'+(x.pl?'<div class="mt">📍 '+window.esc(x.pl)+'</div>':'')+'</div><button type="button" class="link" data-cx aria-label="Tutup">✕</button></div><div class="row" style="padding:0 14px 12px;gap:8px;flex-wrap:wrap;justify-content:flex-start"><button type="button" class="link" data-cz>🎯 Pusatkan</button><a class="link" target="_blank" rel="noopener" href="https://earth.google.com/web/@'+x.la+','+x.lo+',0a,800d,35y,0h,0t,0r">Google Earth</a><button type="button" class="link del" data-dx>🗑 Hapus titik</button></div></div>';
+ host.innerHTML='<div class="it" style="margin-top:12px"><div class="hd" style="cursor:default">'+window.im(x.pk)+'<div class="tx"><div class="tt">'+window.esc(nm)+'</div><div class="mt"><b>'+window.esc(kt)+'</b></div><div class="mt">'+x.la+', '+x.lo+' · '+ac+(x.al!=null?' · Elv '+Math.round(x.al)+' m':'')+'</div>'+(x.pl?'<div class="mt">📍 '+window.esc(x.pl)+'</div>':'')+'</div><button type="button" class="link" data-cx aria-label="Tutup">✕</button></div><div class="row" style="padding:0 14px 12px;gap:8px;flex-wrap:wrap;justify-content:flex-start"><button type="button" class="link" data-cz>🎯 Pusatkan</button><a class="link" target="_blank" rel="noopener" href="https://earth.google.com/web/@'+x.la+','+x.lo+',0a,800d,35y,0h,0t,0r">Google Earth</a><button type="button" class="link" data-ex>✎ Ubah</button><button type="button" class="link del" data-dx>🗑 Hapus titik</button></div></div>';
  host.onclick=function(e){if(e.target.closest('[data-cx]')){V.sel=null;host.innerHTML='';V.upd(1)}else if(e.target.closest('[data-cz]'))V.m.setView([+x.la,+x.lo],Math.max(V.m.getZoom(),18));
+  else if(e.target.closest('[data-ex]')){window.editTitik(s?'d':'n',x.id,function(){V.sel=null;host.innerHTML='';refresh()})}
   else if(e.target.closest('[data-dx]')){var A=s?window.TD:window.TN,i=A.indexOf(x);A.splice(i,1);window.sv2();V.sel=null;host.innerHTML='';refresh();window.toast((s?'Titik':'Tanaman')+' dihapus',{t:'Batalkan',f:function(){A.splice(i,0,x);window.sv2();refresh()}})}}}
 function refresh(){window.drawT();window.drawN();if(tmV)tmV.upd(1);if(nmV)nmV.upd(1);if(cmV)cmV.upd(1)}
 
@@ -2791,7 +2792,7 @@ function uiPanel(force){if(!UI.on||!UI.pn||(!force&&UI.nm&&$q('#ukName')))return
  +'<div class="ukI">'+hint+'</div>'+ctl+'<div id="ukn">'+numH(r)+'</div>'
  +'<div class="ukr"><button type="button" class="chp" data-u="undo">↩ Urungkan</button><button type="button" class="chp" data-u="clr">Kosongkan</button></div>'+sv
  +(UD.length?'<h3 class="ukh">Hasil ukur tersimpan ('+UD.length+')</h3>'+UD.map(function(d,i){return'<div class="ukd2"><div><b>'+esc2(d.nama)+'</b><div class="st">'+(d.tipe==='poly'?fa(d.ar)+' · '+fh(d.ar)+' · keliling '+fm(d.len):'Panjang '+fm(d.len))+(d.dur?' · '+fdur(d.dur):'')+'</div><div class="st">'+(d.mode==='j'?'Rekam jejak':d.mode==='g'?'Titik GPS':'Manual')+' · '+new Date(d.dt).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+'</div></div><div class="ukr"><button type="button" class="chp" data-u="v'+i+'">Lihat</button><button type="button" class="chp" data-u="e'+i+'">Ekspor</button><button type="button" class="chp'+(UI.dc===i?' on2':'')+'" data-u="d'+i+'">'+(UI.dc===i?'Yakin hapus?':'Hapus')+'</button></div>'+expH(i)+'</div>'}).join(''):'')
- +(isAdm()?'<h3 class="ukh">Lapisan polygon (admin)</h3><div class="st">Unggah GeoJSON atau KML. Lapisan tampil di semua peta, pilih lapisan lewat tombol di pojok kanan atas peta.</div><div class="ukr"><label class="chp" style="cursor:pointer">Unggah lapisan<input type="file" id="ukf" accept=".geojson,.json,.kml,.kmz,application/json,application/geo+json,application/vnd.google-earth.kml+xml" hidden></label></div>'+(LY.length?LY.map(function(l){return'<div class="ukd"><b>'+esc2(l.nama)+'</b><button type="button" class="chp" data-u="ly'+l.id+'">Hapus</button></div>'}).join(''):''):'')}
+ +(isAdm()?'<h3 class="ukh">Lapisan polygon (admin)</h3><div class="st">Unggah GeoJSON, KML, atau KMZ (boleh beberapa berkas sekaligus). Lapisan tampil di semua peta, pilih lapisan lewat tombol di pojok kanan atas peta.</div><div class="ukr"><label class="chp" style="cursor:pointer">Unggah lapisan<input type="file" id="ukf" multiple accept=".geojson,.json,.kml,.kmz,application/json,application/geo+json,application/vnd.google-earth.kml+xml" hidden></label></div>'+(LY.length?LY.map(function(l){return'<div class="ukd"><b>'+esc2(l.nama)+'</b><button type="button" class="chp" data-u="ly'+l.id+'">Hapus</button></div>'}).join(''):''):'')}
 function uiTimer(){if(UI.tm)return;UI.tm=setInterval(function(){var e=$q('#ukT');if(e)e.textContent=fdur(elapsed());if(!UI.rec){clearInterval(UI.tm);UI.tm=null}},1000)}
 function uiToggle(force){var want=force==null?!UI.on:!!force;if(want&&!canU()){toast('Alat lapangan khusus penyuluh kehutanan dan admin');return}UI.on=want;UI.pn.hidden=!UI.on;var b=$q('.ukb',UI.map.getContainer());if(b)b.classList.toggle('on',UI.on);var q=$q('[data-q=tool]');if(q)q.classList.toggle('on',UI.on);UI.map.getContainer().classList.toggle('ukm',UI.on&&UI.mode==='m');
  if(UI.on){UI.map.invalidateSize();lyLoad();if(UI.mode!=='m')locStart(0);uiDraw();setTimeout(function(){UI.pn.scrollIntoView({behavior:'smooth',block:'nearest'})},120)}else{uiStopRec();uiDraw()}}
@@ -2805,7 +2806,7 @@ function uiInit(m){if(UI.map===m)return;UI.map=m;var box=m.getContainer();box.cl
  box.insertAdjacentHTML('afterend','<div class="lcq"><button type="button" class="lcb2" data-q="loc">📍 Lokasi saya</button><button type="button" class="lcb2 u" data-q="tool" style="display:none">📐 Alat lapangan</button></div>');
  $q('.lcq').onclick=function(e){var q=e.target.closest('[data-q]');if(!q)return;if(q.dataset.q==='loc')locStart(1);else uiToggle()};
  m.on('click',function(e){if(UI.on&&UI.mode==='m'){UI.P.push([e.latlng.lat,e.latlng.lng]);uiDraw()}});
- pn.onclick=uiClick;pn.onchange=function(e){if(e.target.id==='ukf'&&e.target.files[0]){lyUp(e.target.files[0]);e.target.value=''}else if(e.target.id==='ukl'){UI.lim=+e.target.value;uiNum()}};
+ pn.onclick=uiClick;pn.onchange=function(e){if(e.target.id==='ukf'&&e.target.files[0]){var ufl=[].slice.call(e.target.files);e.target.value='';if(window.lyUploadMany)window.lyUploadMany(ufl);else lyUp(ufl[0])}else if(e.target.id==='ukl'){UI.lim=+e.target.value;uiNum()}};
  pn.oninput=function(e){if(e.target.id==='ukName')UI.nmv=e.target.value};setTimeout(function(){uiDraw(1)},400);
  uiRoleSync()}
 function uiSetMode(k){UI.mode=k;UI.map.getContainer().classList.toggle('ukm',UI.on&&k==='m');if(k!=='j')uiStopRec();if(k!=='m')locStart(0);uiDraw()}
@@ -3090,10 +3091,11 @@ function gFin(r){var bad=0,rd=function(v){return Math.round(v*1e6)/1e6};
  var simp=function(ring){var o=[ring[0]],i;for(i=1;i<ring.length;i++){var a=o[o.length-1],b=ring[i];if(Math.abs(a[0]-b[0])*110574+Math.abs(a[1]-b[1])*111320>=1.5)o.push(b)}if(o.length<3)o=ring;if(o.length>3000){var st=Math.ceil(o.length/3000);o=o.filter(function(q,i){return i%st===0})}return o.map(function(q){if(Math.abs(q[0])>90||Math.abs(q[1])>180)bad=1;return[rd(q[0]),rd(q[1])]})};
  r.pol=r.pol.map(function(p){return{n:p.n,r:simp(p.r),h:(p.h||[]).map(simp)}});r.pts=r.pts.filter(function(q){return isFinite(q.la)&&isFinite(q.lo)}).map(function(q){if(Math.abs(q.la)>90||Math.abs(q.lo)>180)bad=1;return{n:q.n,la:rd(q.la),lo:rd(q.lo)}});if(bad)throw 0;return r}
 function parseGeo(bf){var u=new Uint8Array(bf);if(u[0]===0x50&&u[1]===0x4b)return unz(bf).then(function(t){return gFin(kmlParse(t))});var t=new TextDecoder().decode(bf).replace(/^\uFEFF/,'').trim();if(t[0]==='{')return Promise.resolve(gFin(gjParse(JSON.parse(t))));if(/<gpx[\s>]/i.test(t))return Promise.resolve(gFin(gpxParse(t)));return Promise.resolve(gFin(kmlParse(t)))}
+function gList(a,k,inf){if(!a.length||a.length<2&&k==='dq')return'';return'<div style="margin-top:6px">'+a.slice(0,40).map(function(p,i){return'<div class="pgd" style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><span>'+(i+1)+'. '+esc(p.n||(k==='dp'?'Polygon':'Titik'))+' \u00b7 '+inf(p)+'</span><button type="button" class="link del" data-g="'+k+':'+i+'" aria-label="Hapus">\u2715</button></div>'}).join('')+(a.length>40?'<div class="pgd" style="font-size:12px">dan '+(a.length-40)+' lagi\u2026</div>':'')+'</div>'}
 function gCard(){var g=P.id.geo||{},pl=g.pol||[],pt=g.pts||[],ha=pl.reduce(function(a,p){return a+pArea(p)},0);
  return'<div class="card" id="pgg"><h3>Areal tanam & titik persemaian</h3><div class="sub">Upload batas areal tanam (polygon) dan titik persemaian dari file KML, KMZ, GeoJSON, atau GPX berkoordinat derajat (WGS84). Dipakai untuk memeriksa apakah koordinat foto masih di dalam area. Tersimpan per orang di ponsel ini.</div>'
- +'<div class="pgd" style="margin-top:10px"><b>Areal tanam:</b> '+(pl.length?pl.length+' polygon, sekitar '+ha.toFixed(2)+' Ha'+(pl.some(function(p){return p.n})?' ('+esc(pl.map(function(p){return p.n}).filter(Boolean).slice(0,3).join(', '))+(pl.length>3?', ...':'')+')':''):'belum ada')+'</div><div class="row" style="margin-top:6px;gap:8px;flex-wrap:wrap"><button type="button" class="chp" data-g="up1">Upload areal tanam</button>'+(pl.length?'<button type="button" class="chp" data-g="x1">Hapus</button>':'')+'</div>'
- +'<div class="pgd" style="margin-top:12px"><b>Titik persemaian:</b> '+(pt.length?pt.length+' titik'+(pt.some(function(p){return p.n})?' ('+esc(pt.map(function(p){return p.n}).filter(Boolean).slice(0,3).join(', '))+(pt.length>3?', ...':'')+')':''):'belum ada')+'</div><div class="row" style="margin-top:6px;gap:8px;flex-wrap:wrap"><button type="button" class="chp" data-g="up2">Upload titik persemaian</button>'+(pt.length?'<button type="button" class="chp" data-g="x2">Hapus</button>':'')+'</div>'
+ +'<div class="pgd" style="margin-top:10px"><b>Areal tanam:</b> '+(pl.length?pl.length+' polygon, sekitar '+ha.toFixed(2)+' Ha'+(pl.some(function(p){return p.n})?' ('+esc(pl.map(function(p){return p.n}).filter(Boolean).slice(0,3).join(', '))+(pl.length>3?', ...':'')+')':''):'belum ada')+'</div><div class="row" style="margin-top:6px;gap:8px;flex-wrap:wrap"><button type="button" class="chp" data-g="up1">'+(pl.length?'+ Tambah':'Upload')+' areal tanam</button>'+(pl.length?'<button type="button" class="chp" data-g="x1">Hapus semua</button>':'')+'</div><div class="pgd" style="font-size:12px;color:var(--mute);margin-top:4px">Bisa memilih beberapa berkas sekaligus. Polygon baru ditambahkan ke yang sudah ada.</div>'+gList(pl,'dp',function(p){return pArea(p).toFixed(2)+' Ha'})
+ +'<div class="pgd" style="margin-top:12px"><b>Titik persemaian:</b> '+(pt.length?pt.length+' titik'+(pt.some(function(p){return p.n})?' ('+esc(pt.map(function(p){return p.n}).filter(Boolean).slice(0,3).join(', '))+(pt.length>3?', ...':'')+')':''):'belum ada')+'</div><div class="row" style="margin-top:6px;gap:8px;flex-wrap:wrap"><button type="button" class="chp" data-g="up2">'+(pt.length?'+ Tambah':'Upload')+' titik persemaian</button>'+(pt.length?'<button type="button" class="chp" data-g="x2">Hapus semua</button>':'')+'</div>'+gList(pt,'dq',function(p){return p.la.toFixed(5)+', '+p.lo.toFixed(5)})
  +'<div class="two" style="margin-top:12px"><div><label>Radius persemaian (m)</label><div class="in"><input id="pgrad" type="number" inputmode="decimal" min="0" value="'+gRad()+'"></div></div><div><label>Toleransi batas areal (m)</label><div class="in"><input id="pgtol" type="number" inputmode="decimal" min="0" value="'+gTol()+'"></div></div></div><div class="pgd">Foto dianggap sah bila koordinatnya di dalam polygon (dengan toleransi akurasi GPS) atau dalam radius titik persemaian. Di luar itu muncul peringatan saat menyimpan foto dan di tab Pratinjau.</div></div>'}
 
 function idb(){return new Promise(function(r,j){var q=indexedDB.open('kanopi-pgl-img',1);q.onupgradeneeded=function(){q.result.createObjectStore('i')};q.onsuccess=function(){r(q.result)};q.onerror=j})}
@@ -3224,9 +3226,15 @@ document.addEventListener('click',function(e){var t=e.target,v;if(!t.closest('#p
 if((v=t.closest('[data-ph]'))){var a=v.dataset.ph.split('|');pick(a[0],+a[1],a[2]==='1')}
 else if((v=t.closest('[data-ed]'))){var q=v.dataset.ed.split('|');edit(q[0],+q[1])}
 else if((v=t.closest('[data-g]'))){var gq=v.dataset.g,gd=P.id.geo=P.id.geo||{};
- if(gq==='x1'){if(confirm('Hapus data areal tanam?')){gd.pol=[];sv();R()}}
+ if(/^d[pq]:/.test(gq)){var di=+gq.slice(3),da=gq[1]==='p'?gd.pol:gd.pts;if(da&&da[di]!=null){da.splice(di,1);sv();R()}}
+ else if(gq==='x1'){if(confirm('Hapus semua data areal tanam?')){gd.pol=[];sv();R()}}
  else if(gq==='x2'){if(confirm('Hapus data titik persemaian?')){gd.pts=[];sv();R()}}
- else{var wt=gq==='up1'?'pol':'pts',fi=document.createElement('input');fi.type='file';fi.onchange=function(){var fl=fi.files[0];if(!fl)return;toast('Membaca file\u2026');fl.arrayBuffer().then(parseGeo).then(function(r){var a=r[wt];if(!a.length){toast(wt==='pol'?'Tidak ada polygon di file ini':'Tidak ada titik (Point) di file ini');return}gd[wt]=a;gd.f=fl.name;sv();R();toast(wt==='pol'?a.length+' polygon dimuat':a.length+' titik dimuat')}).catch(function(){toast('File tidak bisa dibaca. Gunakan KML, KMZ, GeoJSON, atau GPX berkoordinat derajat (WGS84)')})};fi.click()}}
+ else{var wt=gq==='up1'?'pol':'pts',fi=document.createElement('input');fi.type='file';fi.multiple=true;fi.onchange=function(){var fls=[].slice.call(fi.files||[]);if(!fls.length)return;toast('Membaca '+fls.length+' berkas\u2026');var add=[],fail=0,empty=0;
+  fls.reduce(function(pr,fl){return pr.then(function(){return fl.arrayBuffer().then(parseGeo).then(function(r){var a=r[wt];if(!a.length){empty++;return}var bn=fl.name.replace(/\.[^.]+$/,'');a.forEach(function(q){if(!q.n)q.n=a.length>1?bn+' '+(add.length+1):bn;add.push(q)})}).catch(function(){fail++})})},Promise.resolve()).then(function(){
+   var cur=gd[wt]=gd[wt]||[],key=function(q){return wt==='pol'?JSON.stringify(q.r):q.la+','+q.lo},have={},n=0,dup=0;cur.forEach(function(q){have[key(q)]=1});
+   add.forEach(function(q){var k=key(q);if(have[k]){dup++;return}have[k]=1;cur.push(q);n++});
+   if(n){gd.f=fls.map(function(f){return f.name}).slice(0,3).join(', ');sv();R()}
+   var m=(n?n+(wt==='pol'?' polygon ditambahkan':' titik ditambahkan'):(wt==='pol'?'Tidak ada polygon baru':'Tidak ada titik baru'))+(dup?' ('+dup+' sama, dilewati)':'')+(empty?' \u00b7 '+empty+' berkas tanpa '+(wt==='pol'?'polygon':'titik'):'')+(fail?' \u00b7 '+fail+' berkas gagal dibaca (pakai KML, KMZ, GeoJSON, atau GPX berkoordinat derajat WGS84)':'');toast(m)})};fi.click()}}
 else if((v=t.closest('[data-x]'))){var k=v.dataset.x,b=B();
  if(k==='ket'){var n=[];b.tgl.slice().sort().forEach(function(d){var x=b.h[d];if(x.u&&n.indexOf(x.u)<0)n.push(x.u)});if(!n.length){toast('Isi uraian kegiatan di tab Hari kerja dulu');return}b.ket=n.join(' ');sv();R()}
  else if(k==='cen'){navigator.geolocation&&navigator.geolocation.getCurrentPosition(function(p){P.id.cla=p.coords.latitude.toFixed(6);P.id.clo=p.coords.longitude.toFixed(6);sv();R()},function(){toast('Lokasi tidak tersedia')},{enableHighAccuracy:true,timeout:10000})}
@@ -3370,7 +3378,7 @@ function vs(){var k=vk();if(VSk!==k){VSk=k;try{VS=JSON.parse(localStorage.getIte
 function svV(){try{localStorage.setItem(vk(),JSON.stringify(VS))}catch(e){}}
 function hs(x){return JSON.stringify(x).length+':'+(x.pk&&window.MEM[x.pk]?1:0)}
 function items(){var a=[];window.TD.forEach(function(x){a.push({j:'tandai',x:x})});window.TN.forEach(function(x){a.push({j:'tanam',x:x})});return a}
-function badgeH(id){var v=vs()[id];if(!v)return'<span class="vb">Belum dikirim</span>';if(v.s==='terverifikasi')return'<span class="vb t">✓ Terverifikasi</span>';if(v.s==='ditolak')return'<span class="vb x">Ditolak'+(v.c?': '+E(v.c):'')+'</span>';return'<span class="vb m">Menunggu verifikasi</span>'}
+function badgeH(id){var v=vs()[id];if(!v)return'<span class="vb">Belum dikirim</span>';var oo=items().filter(function(q){return q.x.id===id})[0];if(oo&&v.h!==hs(oo.x))return'<span class="vb m">Diubah, belum dikirim ulang</span>';if(v.s==='terverifikasi')return'<span class="vb t">✓ Terverifikasi</span>';if(v.s==='ditolak')return'<span class="vb x">Ditolak'+(v.c?': '+E(v.c):'')+'</span>';return'<span class="vb m">Menunggu verifikasi</span>'}
 function deco(el,id){var t=el&&el.querySelector('.tt');if(!t||!id)return;var o=t.querySelector('.vb');if(o)o.remove();t.insertAdjacentHTML('beforeend',badgeH(id))}
 function badges(){document.querySelectorAll('#tdls .it').forEach(function(el){var b=el.querySelector('[data-d]');deco(el,b&&b.dataset.d)});document.querySelectorAll('#nls .it').forEach(function(el){deco(el,el.dataset.id)})}
 function counts(){var c={n:0,m:0,t:0,x:0},V=vs();items().forEach(function(o){var v=V[o.x.id];if(!v)c.n++;else if(v.s==='terverifikasi')c.t++;else if(v.s==='ditolak')c.x++;else c.m++});return c}
@@ -3394,6 +3402,7 @@ function send(btn){if(busy)return;if(!on()){T('Masuk ke akun yang aktif dulu.');
  if(gone.length)chain=chain.then(function(){return sbTok().then(function(t){return sbf('/rest/v1/rpc/titik_hapus',{m:'POST',b:{p_ids:gone}},t)}).then(function(){gone.forEach(function(id){delete V[id]});svV()})});
  chain.then(function(){return pull()}).then(function(){T(sent+' titik terkirim untuk diverifikasi.')}).catch(function(x){T(bad(x)?NOSQL:window.sbErr(x))}).then(function(){busy=false;badges();ui()})}
 
+window.vMark=function(id){var v=vs()[id];if(v){v.h='';svV()}};
 /* ================= layar verifikasi ================= */
 document.body.insertAdjacentHTML('beforeend','<div class="ov" id="ovv"><div class="sh" role="dialog" aria-label="Verifikasi data"><h2>Verifikasi data <button class="link" type="button" id="vx">Tutup</button></h2><div class="st" id="vsc"></div><div class="seg" id="vsg" style="margin-top:10px"><button type="button" class="on" data-s="menunggu">Menunggu</button><button type="button" data-s="terverifikasi">Terverifikasi</button><button type="button" data-s="ditolak">Ditolak</button><button type="button" data-s="">Semua</button></div><div id="vls"></div><button class="btn" id="vmo" type="button" style="display:none;margin-top:10px">Muat lagi</button></div></div>');
 var VF='menunggu',VO=0,VN=15;
@@ -3417,7 +3426,7 @@ document.body.insertAdjacentHTML('beforeend','<div class="ov" id="ovl"><div clas
 +'<label for="lnm">Nama peta</label><div class="in"><input id="lnm" maxlength="80" placeholder="Contoh: Batas kawasan hutan"></div>'
 +'<label for="lkt">Keterangan (peta apa)</label><div class="in"><input id="lkt" maxlength="200" placeholder="Contoh: Peta kawasan hutan lindung, sumber BPKH 2024"></div>'
 +'<div id="lscw" style="display:none"><label for="lsc">Tampil untuk</label><select id="lsc" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(0,0,0,.15);font:inherit;background:var(--card);color:inherit"><option value="semua">Semua pengguna</option><option value="akun">Hanya saya</option></select></div>'
-+'<div class="st" id="lsn"></div><div class="row" style="margin-top:10px"><label class="chp" style="cursor:pointer">📂 Pilih berkas KML/KMZ/GeoJSON<input type="file" id="lfi" accept=".kml,.kmz,.geojson,.json" hidden></label></div>'
++'<div class="st" id="lsn"></div><div class="row" style="margin-top:10px"><label class="chp" style="cursor:pointer">📂 Pilih berkas KML/KMZ/GeoJSON (boleh banyak)<input type="file" id="lfi" accept=".kml,.kmz,.geojson,.json" multiple hidden></label></div>'
 +'<div class="st" id="lst" role="status"></div><h3 style="margin-top:16px;font-size:15px">Peta yang tersedia</h3><div id="lls"></div></div></div>');
 function setL(m){qs('#lst').textContent=m}
 var HK='kanopi-ly-hide';function hid(){try{return JSON.parse(localStorage.getItem(HK)||'[]')}catch(e){return[]}}
@@ -3431,18 +3440,94 @@ qs('#lls').onclick=function(e){var b=e.target.closest('[data-ld]');if(!b)return;
 function kmzText(buf){var v=new DataView(buf),u=new Uint8Array(buf),e=-1,i,dc=new TextDecoder();for(i=buf.byteLength-22;i>=Math.max(0,buf.byteLength-66000);i--)if(v.getUint32(i,true)===0x06054b50){e=i;break}if(e<0)throw 0;
  var n=v.getUint16(e+10,true),p=v.getUint32(e+16,true),best=null;for(var k=0;k<n;k++){if(v.getUint32(p,true)!==0x02014b50)break;var m=v.getUint16(p+10,true),cs=v.getUint32(p+20,true),nl=v.getUint16(p+28,true),xl=v.getUint16(p+30,true),cl=v.getUint16(p+32,true),lo=v.getUint32(p+42,true),nm=dc.decode(u.subarray(p+46,p+46+nl));if(/\.kml$/i.test(nm)&&(!best||/(^|\/)doc\.kml$/i.test(nm)))best={m:m,cs:cs,lo:lo};p+=46+nl+xl+cl}
  if(!best)throw 0;var ln=v.getUint16(best.lo+26,true),lx=v.getUint16(best.lo+28,true),s0=best.lo+30+ln+lx,d=u.slice(s0,s0+best.cs);if(best.m===0)return Promise.resolve(dc.decode(d));if(best.m!==8||typeof DecompressionStream==='undefined')throw 0;return new Response(new Blob([d]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text()}
-window.lyUpload=function(file){if(!on()){T('Masuk ke akun yang aktif dulu.');return}var open=qs('#ovl').classList.contains('on'),base=file.name.replace(/\.[^.]+$/,''),nm,kt;
- if(open){nm=qs('#lnm').value.trim();kt=qs('#lkt').value.trim()}else{nm=prompt('Nama peta:',base);if(nm===null)return;kt=prompt('Keterangan peta (misalnya: batas kawasan hutan). Boleh kosong:','');if(kt===null)return}
+window.lyUpload=function(file,opt){opt=opt||{};if(!on()){T('Masuk ke akun yang aktif dulu.');return}var open=qs('#ovl').classList.contains('on'),base=file.name.replace(/\.[^.]+$/,''),nm,kt;
+ if(open){nm=qs('#lnm').value.trim();kt=qs('#lkt').value.trim();if(opt.multi)nm=(nm?nm+' \u2013 ':'')+base}else if(opt.multi){nm=base;kt=opt.kt||''}else{nm=prompt('Nama peta:',base);if(nm===null)return;kt=prompt('Keterangan peta (misalnya: batas kawasan hutan). Boleh kosong:','');if(kt===null)return}
  nm=(nm||base).trim();var z=/\.kmz$/i.test(file.name);if(file.size>(z?5e6:3e6)){T('Berkas terlalu besar (maks. '+(z?5:3)+' MB)');setL('Berkas terlalu besar.');return}
  setL('Membaca '+file.name+'…');
  var rd=z?file.arrayBuffer().then(kmzText).then(window.kmlToGj):file.text().then(function(t){return/\.kml$/i.test(file.name)?window.kmlToGj(t):JSON.parse(t)});
- rd.catch(function(){throw'Berkas tidak bisa dibaca. Pakai KML, KMZ, atau GeoJSON yang valid.'}).then(function(g){if(!g||!(g.features||g.coordinates||g.geometry)||(g.features&&!g.features.length))throw'Tidak ada bentuk (polygon, garis, atau titik) di berkas ini.';if(JSON.stringify(g).length>4e6)throw'Peta terlalu besar (maks. ±4 MB). Sederhanakan dulu di QGIS atau Google Earth.';
+ return rd.catch(function(){throw'Berkas tidak bisa dibaca. Pakai KML, KMZ, atau GeoJSON yang valid.'}).then(function(g){if(!g||!(g.features||g.coordinates||g.geometry)||(g.features&&!g.features.length))throw'Tidak ada bentuk (polygon, garis, atau titik) di berkas ini.';if(JSON.stringify(g).length>4e6)throw'Peta terlalu besar (maks. ±4 MB). Sederhanakan dulu di QGIS atau Google Earth.';
   var adm=role()==='admin',ln=adm?(open?qs('#lsc').value:'semua'):'akun',body={nama:nm,keterangan:kt||null,lingkup:ln,geojson:g};setL('Mengunggah…');
-  return sbTok().then(function(t){return sbf('/rest/v1/peta_lapisan',{m:'POST',h:{Prefer:'return=minimal'},b:body},t).catch(function(x){if(adm&&bad(x)){return sbf('/rest/v1/peta_lapisan',{m:'POST',h:{Prefer:'return=minimal'},b:{nama:nm,geojson:g}},t)}throw x})})}).then(function(){setL('Peta "'+nm+'" diunggah.');T('Peta diunggah');qs('#lnm').value='';qs('#lkt').value='';loadL();window.lyLoad()}).catch(function(x){var m=typeof x==='string'?x:(bad(x)?NOSQL:window.sbErr(x));setL(m);T(m)})};
-qs('#lfi').onchange=function(){var f=this.files[0];this.value='';if(f)window.lyUpload(f)};
+  return sbTok().then(function(t){return sbf('/rest/v1/peta_lapisan',{m:'POST',h:{Prefer:'return=minimal'},b:body},t).catch(function(x){if(adm&&bad(x)){return sbf('/rest/v1/peta_lapisan',{m:'POST',h:{Prefer:'return=minimal'},b:{nama:nm,geojson:g}},t)}throw x})})}).then(function(){setL('Peta "'+nm+'" diunggah.');T('Peta diunggah');if(!opt.multi){qs('#lnm').value='';qs('#lkt').value=''}loadL();window.lyLoad();return true}).catch(function(x){var m=typeof x==='string'?x:(bad(x)?NOSQL:window.sbErr(x));setL(file.name+': '+m);T(m);return false})};
+window.lyUploadMany=function(files){files=[].slice.call(files||[]);if(!files.length)return;if(files.length===1)return window.lyUpload(files[0]);if(!on()){T('Masuk ke akun yang aktif dulu.');return}var kt='';if(!qs('#ovl').classList.contains('on')){var k=prompt('Keterangan untuk '+files.length+' peta ini (misalnya: batas kawasan). Boleh kosong:','');if(k===null)return;kt=k}
+ var ok=0,i=0;files.reduce(function(p,f){return p.then(function(){i++;setL('Mengunggah '+i+' dari '+files.length+': '+f.name+'\u2026');return Promise.resolve(window.lyUpload(f,{multi:true,kt:kt})).then(function(r){if(r)ok++})})},Promise.resolve()).then(function(){var m=ok+' dari '+files.length+' peta berhasil diunggah.'+(ok<files.length?' Cek pesan di atas untuk yang gagal.':'');setL(m);T(m)})};
+qs('#lfi').onchange=function(){var fs=[].slice.call(this.files||[]);this.value='';if(fs.length)window.lyUploadMany(fs)};
 
 document.addEventListener('click',function(e){var b=e.target.closest('.vbar [data-c]');if(!b)return;var c=b.dataset.c;if(c==='send')send(b);else if(c==='ver')openV();else if(c==='lay')openL()});
 try{badges();ui()}catch(e){}
 })();
-</script></body>
+</script><script>(function(){
+/* ===== v61: ubah titik lama + lengkapi wilayah titik lama ===== */
+function $(s,r){return(r||document).querySelector(s)}
+function E(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function T(m,a){try{window.toast(m,a)}catch(e){}}
+document.body.insertAdjacentHTML('beforeend','<div class="ov" id="ove"><div class="sh" role="dialog" aria-label="Ubah titik"><h2><span id="eth">Ubah</span> <button class="link" type="button" data-close>Tutup</button></h2><div id="ebd"></div></div></div>');
+var OV=$('#ove');OV.addEventListener('click',function(e){if(e.target===OV||e.target.hasAttribute('data-close'))OV.classList.remove('on')});
+var ST=null;
+function cats(k,cur){var l=(window.TC[k]||[]).concat((window.CK&&window.CK[k])||[]);if(cur&&l.indexOf(cur)<0)l.push(cur);return l}
+function catOpts(k,cur){return cats(k,cur).map(function(c){return'<option'+(c===cur?' selected':'')+'>'+E(c)+'</option>'}).join('')+'<option value="__o">Lainnya (tulis sendiri)…</option>'}
+function num(v){return parseFloat(String(v).replace(',','.'))}
+window.editTitik=function(j,id,cb){
+ var A=j==='d'?window.TD:window.TN,x=A.filter(function(k){return k.id===id})[0];if(!x){T('Titik tidak ditemukan');return}
+ ST={j:j,x:x,cb:cb,k:x.k};var d=j==='d',h='';
+ if(d){h+='<div class="seg" id="ejk"><button type="button" data-k="Potensi">Potensi</button><button type="button" data-k="Lahan kritis">Lahan kritis</button></div>'
+  +'<label for="ec">Kategori</label><div class="in"><select id="ec"></select></div><div class="in" id="eow" style="display:none;margin-top:8px"><input id="eo" placeholder="Tulis kategori baru" aria-label="Kategori baru"></div>'
+  +'<label for="en">Nama atau keterangan lokasi</label><div class="in"><input id="en"></div>'
+  +'<label for="ea">Perkiraan luas, hektare (opsional)</label><div class="in"><input id="ea" inputmode="decimal"></div>'
+  +'<label for="et">Catatan (opsional)</label><div class="in"><textarea id="et"></textarea></div>'}
+ else h+='<label for="en">Nama tanaman (opsional)</label><div class="in"><input id="en"></div>'
+  +'<label for="eg">Tanggal tanam (opsional)</label><div class="in"><input id="eg" type="date"></div>'
+  +'<label for="el">Lokasi atau petak (opsional)</label><div class="in"><input id="el"></div>';
+ h+='<h3 style="margin-top:16px">Koordinat</h3><div class="two"><div><label for="ela">Lintang</label><div class="in"><input id="ela" inputmode="decimal"></div></div><div><label for="elo">Bujur</label><div class="in"><input id="elo" inputmode="decimal"></div></div></div>'
+  +'<div class="row" style="margin-top:6px;justify-content:flex-start"><button type="button" class="link" id="egp">Pakai posisi GPS saya</button></div>'
+  +'<div class="st">Foto asli tidak berubah. Kalau koordinat diganti, akurasi GPS dan nama tempat lama dikosongkan.</div>'
+  +'<h3 style="margin-top:16px">Desa, kecamatan, kabupaten</h3>'+window.wBlock('te')
+  +'<div class="err" id="eer" role="alert"></div><button class="btn" id="esv" type="button">Simpan perubahan</button>';
+ $('#eth').textContent=d?'Ubah titik':'Ubah tanaman';$('#ebd').innerHTML=h;
+ $('#en').value=d?(x.n||''):(x.j||'');$('#ela').value=x.la;$('#elo').value=x.lo;
+ if(d){$('#ea').value=x.a||'';$('#et').value=x.t||'';selK(x.k,x.c)}else{$('#eg').value=x.tg||'';$('#el').value=x.lk||''}
+ $('#teds').value=x.ds||'';$('#tekc').value=x.kc||'';$('#tekb').value=x.kb||'';
+ $('#tewa').onclick=function(){var a=num($('#ela').value),o=num($('#elo').value);window.wAuto('te',isFinite(a)?a:null,isFinite(o)?o:null,true)};
+ $('#egp').onclick=function(){var g=window.GP;if(!g){T('GPS belum mendapat posisi. Tunggu sebentar.');return}$('#ela').value=g.coords.latitude.toFixed(6);$('#elo').value=g.coords.longitude.toFixed(6);T('Koordinat diisi dari GPS')};
+ $('#esv').onclick=save;
+ OV.classList.add('on');
+ if((!x.ds||!x.kc||!x.kb)&&navigator.onLine&&isFinite(+x.la)&&isFinite(+x.lo))window.wAuto('te',+x.la,+x.lo,false);
+};
+function selK(k,cur){ST.k=k;document.querySelectorAll('#ejk button').forEach(function(b){b.classList.toggle('on',b.dataset.k===k)});$('#ec').innerHTML=catOpts(k,cur);$('#eow').style.display='none'}
+OV.addEventListener('click',function(e){var b=e.target.closest('#ejk button');if(b&&ST)selK(b.dataset.k,'')});
+OV.addEventListener('change',function(e){if(e.target.id==='ec')$('#eow').style.display=e.target.value==='__o'?'':'none'});
+function save(){if(!ST)return;var x=ST.x,d=ST.j==='d',er=$('#eer'),la=num($('#ela').value),lo=num($('#elo').value);
+ if(!isFinite(la)||!isFinite(lo)||Math.abs(la)>90||Math.abs(lo)>180){er.textContent='Koordinat tidak valid. Lintang −90 sampai 90, bujur −180 sampai 180.';return}
+ var cat=null;if(d){cat=$('#ec').value;if(cat==='__o'){cat=$('#eo').value.trim();if(!cat){er.textContent='Tulis kategori baru.';$('#eo').focus();return}if(cats(ST.k).indexOf(cat)<0){(window.CK[ST.k]=window.CK[ST.k]||[]).push(cat);try{localStorage.setItem('kanopi-kat',JSON.stringify(window.CK))}catch(e){}}}}
+ er.textContent='';var moved=Math.abs(la-(+x.la))>1e-7||Math.abs(lo-(+x.lo))>1e-7;
+ if(d){x.k=ST.k;x.c=cat;x.n=$('#en').value.trim()||x.n;x.a=$('#ea').value.trim();x.t=$('#et').value.trim()}
+ else{x.j=$('#en').value.trim();x.tg=$('#eg').value;x.lk=$('#el').value.trim()}
+ if(moved){x.la=la.toFixed(6);x.lo=lo.toFixed(6);x.ac='';x.al=null;x.pl='';if(d)x.src='manual'}
+ x.ds=$('#teds').value.trim();x.kc=$('#tekc').value.trim();x.kb=$('#tekb').value.trim();
+ if(window.vMark)window.vMark(x.id);window.sv2();OV.classList.remove('on');
+ try{window.drawT();window.drawN();window.drawTM()}catch(e){}
+ var cb=ST.cb;ST=null;if(cb)try{cb()}catch(e){}
+ T('Perubahan disimpan'+(window.S&&window.S.uid?'. Kirim ulang agar server ikut diperbarui.':'.'))}
+$('#tdls').addEventListener('click',function(e){var b=e.target.closest('[data-e]');if(b)window.editTitik('d',b.dataset.e)});
+$('#nls').addEventListener('click',function(e){var b=e.target.closest('[data-e]');if(b)window.editTitik('n',b.dataset.e)});
+
+/* ---- lengkapi desa/kecamatan/kabupaten titik lama ---- */
+var RUN=false;
+function miss(A){return A.filter(function(x){return isFinite(+x.la)&&isFinite(+x.lo)&&!(x.ds&&x.kc&&x.kb)})}
+function bar(id,j){return'<div class="vwb" id="'+id+'" style="margin:8px 0;display:none"><button type="button" class="chp" data-w="'+j+'">🏘 Lengkapi wilayah titik lama (<span data-n>0</span>)</button><div class="st" data-m style="margin-top:6px"></div></div>'}
+var h2=$('#tdcn')&&$('#tdcn').parentNode;if(h2)h2.insertAdjacentHTML('beforebegin',bar('wbd','d'));
+var nl=$('#nls');if(nl)nl.insertAdjacentHTML('beforebegin',bar('wbn','n'));
+function upd(){[['#wbd',window.TD],['#wbn',window.TN]].forEach(function(p){var e=$(p[0]);if(!e)return;var n=miss(p[1]).length;e.style.display=n?'':'none';e.querySelector('[data-n]').textContent=n})}
+['drawT','drawN'].forEach(function(n){var o=window[n];window[n]=function(){var r=o.apply(this,arguments);try{upd()}catch(e){}return r}});
+document.addEventListener('click',function(e){var b=e.target.closest('[data-w]');if(!b)return;var d=b.dataset.w==='d',A=d?window.TD:window.TN,L=miss(A),box=b.closest('.vwb'),m=box.querySelector('[data-m]');
+ if(RUN)return;if(!L.length){upd();return}if(!navigator.onLine){T('Perlu internet untuk mengisi wilayah.');return}
+ RUN=true;var i=0,seen={},ok=0;
+ (function next(){if(i>=L.length){RUN=false;window.sv2();try{window.drawT();window.drawN()}catch(e){}m.textContent=ok+' dari '+L.length+' titik terlengkapi.'+(ok<L.length?' Sisanya tidak dikenali server peta. Ubah manual lewat tombol Ubah.':'');
+   if(window.S&&window.S.uid&&ok)T('Wilayah terisi. Kirim ulang agar server ikut diperbarui.');return}
+  var x=L[i++],k=(+x.la).toFixed(3)+','+(+x.lo).toFixed(3),c=seen[k];m.textContent='Melengkapi '+i+' dari '+L.length+'…';
+  var go=c?Promise.resolve(c):window.wFetch(x.la,x.lo).then(function(r){seen[k]=r;return new Promise(function(z){setTimeout(function(){z(r)},1100)})});
+  go.then(function(r){var ch=false;if(!x.ds&&r.ds){x.ds=r.ds;ch=true}if(!x.kc&&r.kc){x.kc=r.kc;ch=true}if(!x.kb&&r.kb){x.kb=r.kb;ch=true}if(ch){ok++;if(window.vMark)window.vMark(x.id)}if(i%10===0)window.sv2()}).catch(function(){}).then(next)})()});
+try{upd()}catch(e){}
+})();
+</script>
+</body>
 </html>
