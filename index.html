@@ -1157,18 +1157,21 @@ body{box-shadow:0 0 0 1px var(--line),0 0 40px rgba(10,30,20,.10);min-height:100
 .hero .scene,.top .scene{width:100%;max-width:none;margin-bottom:0}
 /* kelompok: tidak ada agenda; rekap hanya dilihat (cetak/simpan/bukti khusus penyuluh & admin) */
 body.res #agCard,body.res #rkPrint,body.res #rkBukti,body.res #rkSave,body.res #txBb,body.res [data-jp]{display:none !important}
-/* v69 — ringan: matikan efek yang berat di GPU/CPU (blur kaca, bayangan filter yang beranimasi, animasi hiasan) */
+/* v69/v72 — ringan untuk kartu-kartu fitur; kotak atas (cuaca + ilustrasi) dan layar masuk tetap seperti semula */
 *,*::before,*::after{-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
-.wxc,.trow>.pch,.wxb{background:rgba(255,255,255,.24) !important}
+.top .wxc,.top .trow>.pch,.top .wxb{-webkit-backdrop-filter:blur(6px) !important;backdrop-filter:blur(6px) !important}
 .tile svg,.ahd{filter:none !important}
-html.lite .tile svg,html.lite .ahd,html.lite .bb,html.lite .wxe,html.lite .nav button.on svg,html.lite .fab,
-html.lite .cld,html.lite .sw,html.lite .tw,html.lite .bd,html.lite .sr,html.lite .lt,html.lite .logo .ring{animation:none !important}
-html.lite .rn{display:none}
+html.lite .tile svg,html.lite .ahd,html.lite .bb,html.lite .nav button.on svg,html.lite .fab{animation:none !important}
 html.tdk *{animation-play-state:paused !important}
-.sh,.rwc,.pkp{contain:layout paint}
-.tile,.card{contain:layout paint}
+/* v71 — area sentuh tombol diperluas (tampilan sama), hiasan tidak menangkap sentuhan */
+.link,.chp,.pkx{position:relative}
+.link::after,.chp::after,.pkx::after{content:"";position:absolute;inset:-10px -8px}
+.sh h2 .link::after,.rwc h2 .link::after{inset:-14px -14px}
+.scene,.scn,.ahd,.tile svg,.nav svg{pointer-events:none}
+button,[role=button],.chp,.link,.tile,select,label{-webkit-tap-highlight-color:rgba(0,0,0,0);touch-action:manipulation}
 </style>
 <script id="kunciLayarJs">
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-hc],[data-close],[data-tc]');if(!b)return;var o=b.closest('.ov');if(o)o.classList.remove('on')},true);
 (function(){
  try{
   var n=navigator.hardwareConcurrency||4,m=navigator.deviceMemory,h=document.documentElement;
@@ -2061,7 +2064,7 @@ function hEdit(o){if(!o.s||!o.s.f){toast('Laporan ini disimpan sebelum fitur edi
   tab('in');toast('Laporan dimuat. Ubah isian, lalu simpan lagi ke riwayat.')}
 $('#rhb').onclick=$('#rhb2').onclick=hOpn;
 ['#hf','#ht','#hj'].forEach(function(q){$(q).addEventListener('change',hRen)});
-$('#ovh').addEventListener('click',function(e){var t=e.target,c=t.closest?t.closest('[data-p],[data-u],[data-x],[data-e]'):null;if(t===this||t.hasAttribute('data-hc')){this.classList.remove('on');return}if(!c)return;
+$('#ovh').addEventListener('click',function(e){var t=e.target,c=t.closest?t.closest('[data-p],[data-u],[data-x],[data-e]'):null;if(t===this||(t.closest&&t.closest('[data-hc]'))){this.classList.remove('on');return}if(!c)return;
   if(c.dataset.p){var n=new Date();$('#hf').value=c.dataset.p==='m'?ymd(new Date(n.getFullYear(),n.getMonth(),1)):'';$('#ht').value=c.dataset.p==='m'?ymd(n):'';hRen();return}
   var o=HC.filter(function(x){return x.id===(c.dataset.u||c.dataset.x||c.dataset.e)})[0];if(!o)return;
   if(c.dataset.e){hEdit(o);return}
