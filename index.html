@@ -1916,7 +1916,7 @@ function savePhoto(u,n){try{var f=new File([u2b(u)],n+'-'+Date.now()+'.jpg',{typ
 var DF=['lj','lt','ltx','ld','lw','ll','la','lo','lu','lh','pm','lmn','lad'];
 function sdr(){clearTimeout(dtm);dtm=setTimeout(function(){var f={};DF.forEach(function(k){f[k]=$('#'+k).value});try{localStorage.setItem('kanopi-draft',JSON.stringify({f:f,ag:curAg,ac:acc}))}catch(e){}kset('draft',P)},400)}
 $('#lf').addEventListener('input',sdr);$('#lf').addEventListener('change',sdr);
-function clr(){try{localStorage.removeItem('kanopi-draft')}catch(e){}kdel('draft');P=[];curAg=null;DC={};DF.forEach(function(k){if(k!=='lt'&&k!=='pm')$('#'+k).value=''});$('#ld').value=today;$('#lw').value=hm();$('#kb').checked=true;rp();fag();ltt();window.tbRender&&tbRender()}
+function clr(){try{EDID=null;EDIT0=false;$('#hsv').textContent='Simpan ke riwayat'}catch(e){}try{localStorage.removeItem('kanopi-draft')}catch(e){}kdel('draft');P=[];curAg=null;DC={};DF.forEach(function(k){if(k!=='lt'&&k!=='pm')$('#'+k).value=''});$('#ld').value=today;$('#lw').value=hm();$('#kb').checked=true;rp();fag();ltt();window.tbRender&&tbRender()}
 function tab(t){$('#lf').style.display=t==='in'?'':'none';$('#lr').style.display=t==='pv'?'block':'none';document.querySelectorAll('#lsg button').forEach(function(b){b.classList.toggle('on',b.dataset.t===t)});window.scrollTo(0,0)}
 function restSig(){if(pr.s&&!drawn&&!noRest){var im=new Image();im.onload=function(){cx.drawImage(im,0,0,cv.width,cv.height);drawn=true};im.src=pr.s}}
 function initL(){tab('in');if(!rest){rest=true;try{var d=JSON.parse(localStorage.getItem('kanopi-draft')||'null');if(d&&d.f){Object.keys(d.f).forEach(function(k){var e=$('#'+k);if(e)e.value=d.f[k]});curAg=d.ag||null;if(d.ac!=null)acc=d.ac;if(MEM.draft&&MEM.draft.length)P=MEM.draft.slice()}}catch(e){}}
@@ -1984,7 +1984,7 @@ function render(u){var j=$('#lj').value.trim()||'(judul kegiatan)',jn=jt(),lk=$(
   var dd=function(v){return v?esc(v):'-'};
   sec('Data Diri',['<table><tr><td>Nama</td><td class="cl">:</td><td>'+dd(pr.n)+'</td></tr><tr><td>NIP</td><td class="cl">:</td><td>'+dd(pr.p)+'</td></tr><tr><td>Pangkat/Golongan</td><td class="cl">:</td><td>'+dd(pr.pg)+'</td></tr><tr><td>Jabatan</td><td class="cl">:</td><td>'+dd(pr.jb)+'</td></tr><tr><td>Unit Kerja</td><td class="cl">:</td><td>'+dd(pr.uk)+'</td></tr></table>']);
   sec('Pendahuluan',['<p>Pada '+tg+', telah dilaksanakan kegiatan '+esc(lc(j))+(lk?' bertempat di '+esc(lk):'')+'. Laporan ini disusun sebagai pertanggungjawaban pelaksanaan kegiatan penyuluhan kehutanan.</p>']);
-  sec('Pelaksanaan',['<table><tr><td>Hari dan tanggal</td><td class="cl">:</td><td>'+tg+'</td></tr><tr><td>Waktu</td><td class="cl">:</td><td>'+esc($('#lw').value)+' '+tz()+'</td></tr><tr><td>Tempat</td><td class="cl">:</td><td>'+(esc(lk)||'-')+'</td></tr><tr><td>Judul agenda</td><td class="cl">:</td><td>'+esc(j)+'</td></tr>'+(window.mnRows?mnRows(jn):'')+'</table>']);
+  sec('Pelaksanaan',['<table><tr><td>Hari dan tanggal</td><td class="cl">:</td><td>'+tg+'</td></tr><tr><td>Waktu</td><td class="cl">:</td><td>'+esc($('#lw').value)+' '+tz()+'</td></tr><tr><td>Tempat</td><td class="cl">:</td><td>'+(esc(lk)||'-')+'</td></tr><tr><td>Judul agenda</td><td class="cl">:</td><td>'+esc(j)+'</td></tr></table>']);
   sec('Uraian Kegiatan',li(u));
   if(hs.length)sec('Hasil dan Tindak Lanjut',li(hs));
   sec('Penutup',['<p>Demikian laporan ini disusun untuk dapat dipergunakan sebagaimana mestinya.</p>']);
@@ -2037,7 +2037,7 @@ $('#pb').onclick=function(){var b=this;if(!window.html2pdf||!window.jspdf){toast
   pdfBlob().then(function(bl){
     return dl('Laporan-Kegiatan-'+($('#ld').value||today)+'.pdf',bl)}).then(function(){ags().forEach(function(i){var x=D.filter(function(k){return k.id===i})[0];if(x)x.rep=true});save();toast('PDF disimpan. Laporan yang rapi, terima kasih!')}).catch(function(e){toast(e&&e.code==='declined'?'Penyimpanan dibatalkan':'PDF gagal dibuat. Coba lagi.')}).then(function(){b.disabled=false;b.textContent='Unduh PDF'})};
 /* ===== riwayat laporan ===== */
-var HDB=null,HC=[];
+var HDB=null,HC=[],EDID=null,EDIT0=false;
 function hOpen(){return new Promise(function(r){if(HDB)return r(HDB);try{var q=indexedDB.open('kanopi-lap',1);q.onupgradeneeded=function(){q.result.createObjectStore('r',{keyPath:'id'})};q.onsuccess=function(){HDB=q.result;r(HDB)};q.onerror=function(){r(null)}}catch(e){r(null)}})}
 function hAll(){return hOpen().then(function(d){return new Promise(function(r){if(!d)return r([]);var q=d.transaction('r').objectStore('r').getAll();q.onsuccess=function(){r(q.result||[])};q.onerror=function(){r([])}})})}
 function hPut(o){return hOpen().then(function(d){return new Promise(function(r,j){if(!d)return j();var t=d.transaction('r','readwrite');t.objectStore('r').put(o);t.oncomplete=function(){r()};t.onerror=function(){j()}})})}
@@ -2045,18 +2045,26 @@ function hDel(id){return hOpen().then(function(d){return new Promise(function(r)
 function hNm(d,j){return d+'_'+String(j||'Laporan').replace(/[\\\/:*?"<>|]+/g,'').replace(/\s+/g,' ').trim().slice(0,40)}
 function mkPdf(){return pdfBlob()}
 $('#hsv').onclick=function(){var b=this;if(!window.html2pdf){toast('Pembuat PDF belum termuat. Coba lagi sebentar.');return}b.disabled=true;b.textContent='Menyimpan…';var d=$('#ld').value||today,j=jt();
-  mkPdf().then(function(bl){var o={id:uid(),d:d,j:j,t:$('#lj').value.trim(),n:hNm(d,j),ts:Date.now(),b:bl};return hPut(o).then(function(){toast('Tersimpan di riwayat: '+o.n)})}).catch(function(){toast('Gagal menyimpan. Penyimpanan perangkat mungkin penuh.')}).then(function(){b.disabled=false;b.textContent='Simpan ke riwayat'})};
+  mkPdf().then(function(bl){var sn={f:{},ag:curAg,ac:acc,p:P.slice(),kb:$('#kb').checked};DF.forEach(function(k){sn.f[k]=$('#'+k).value});var o={id:EDID||uid(),d:d,j:j,t:$('#lj').value.trim(),n:hNm(d,j),ts:Date.now(),b:bl,s:sn};EDID=o.id;return hPut(o).then(function(){toast((EDIT0?'Perubahan tersimpan di riwayat: ':'Tersimpan di riwayat: ')+o.n);EDIT0=true})}).catch(function(){toast('Gagal menyimpan. Penyimpanan perangkat mungkin penuh.')}).then(function(){b.disabled=false;b.textContent=EDID?'Simpan perubahan ke riwayat':'Simpan ke riwayat'})};
 document.body.insertAdjacentHTML('beforeend','<div class="ov" id="ovh"><div class="sh" role="dialog" aria-label="Riwayat laporan"><h2>Riwayat laporan <button type="button" class="link" data-hc>Tutup</button></h2><div class="two"><div><label for="hf">Dari tanggal</label><div class="in"><input id="hf" type="date"></div></div><div><label for="ht">Sampai tanggal</label><div class="in"><input id="ht" type="date"></div></div></div><label for="hj">Jenis agenda</label><div class="in"><select id="hj"><option value="">Semua jenis</option></select></div><div class="chips" style="margin-top:8px"><button type="button" class="chp" data-p="m">Bulan ini</button><button type="button" class="chp" data-p="a">Semua</button></div><div class="st" id="hs" role="status"></div><div id="hl"></div><button class="btn" id="hz" style="margin-top:12px">Unduh hasil sebagai ZIP</button></div></div>');
 function hFil(){var f=$('#hf').value,t=$('#ht').value,j=$('#hj').value;return HC.filter(function(o){return(!f||o.d>=f)&&(!t||o.d<=t)&&(!j||o.j===j)}).sort(function(a,b){return a.d<b.d?1:a.d>b.d?-1:b.ts-a.ts})}
 function hRen(){var l=hFil();$('#hs').textContent=HC.length?l.length+' dari '+HC.length+' laporan':'Belum ada laporan tersimpan. Buka laporan, lalu ketuk Simpan ke riwayat.';$('#hz').style.display=l.length?'':'none';
-  $('#hl').innerHTML=l.map(function(o){return'<div class="hl"><div><b>'+esc(o.n)+'</b><small>'+esc(o.t||'')+'</small></div><div class="bt"><button type="button" class="chp" data-u="'+o.id+'">Unduh</button><button type="button" class="chp" data-x="'+o.id+'">Hapus</button></div></div>'}).join('')}
+  $('#hl').innerHTML=l.map(function(o){return'<div class="hl"><div><b>'+esc(o.n)+'</b><small>'+esc(o.t||'')+'</small></div><div class="bt"><button type="button" class="chp" data-e="'+o.id+'">Edit</button><button type="button" class="chp" data-u="'+o.id+'">Unduh</button><button type="button" class="chp" data-x="'+o.id+'">Hapus</button></div></div>'}).join('')}
 function hLoad(){return hAll().then(function(a){HC=a;var j=$('#hj'),v=j.value,u=[];a.forEach(function(o){if(u.indexOf(o.j)<0)u.push(o.j)});j.innerHTML='<option value="">Semua jenis</option>'+u.sort().map(function(x){return'<option>'+esc(x)+'</option>'}).join('');j.value=u.indexOf(v)<0?'':v;hRen()})}
 function hOpn(){$('#ovh').classList.add('on');hLoad()}
+function hEdit(o){if(!o.s||!o.s.f){toast('Laporan ini disimpan sebelum fitur edit, jadi isiannya tidak tersimpan. Buat ulang lalu simpan lagi agar bisa diedit.');return}
+  var d=o.s;if(!confirm('Muat laporan "'+o.n+'" ke isian untuk diedit? Isian yang sedang dikerjakan akan diganti.'))return;
+  DF.forEach(function(k){var e=$('#'+k);if(e)e.value=d.f[k]!=null?d.f[k]:''});
+  curAg=d.ag||null;acc=d.ac!=null?d.ac:'';P=(d.p||[]).slice();kset('draft',P);if($('#kb'))$('#kb').checked=d.kb!==false;
+  EDID=o.id;EDIT0=true;$('#hsv').textContent='Simpan perubahan ke riwayat';sdr();$('#ovh').classList.remove('on');
+  try{rp();fag();ltt();window.tbRender&&tbRender()}catch(e){}
+  tab('in');toast('Laporan dimuat. Ubah isian, lalu simpan lagi ke riwayat.')}
 $('#rhb').onclick=$('#rhb2').onclick=hOpn;
 ['#hf','#ht','#hj'].forEach(function(q){$(q).addEventListener('change',hRen)});
-$('#ovh').addEventListener('click',function(e){var t=e.target,c=t.closest?t.closest('[data-p],[data-u],[data-x]'):null;if(t===this||t.hasAttribute('data-hc')){this.classList.remove('on');return}if(!c)return;
+$('#ovh').addEventListener('click',function(e){var t=e.target,c=t.closest?t.closest('[data-p],[data-u],[data-x],[data-e]'):null;if(t===this||t.hasAttribute('data-hc')){this.classList.remove('on');return}if(!c)return;
   if(c.dataset.p){var n=new Date();$('#hf').value=c.dataset.p==='m'?ymd(new Date(n.getFullYear(),n.getMonth(),1)):'';$('#ht').value=c.dataset.p==='m'?ymd(n):'';hRen();return}
-  var o=HC.filter(function(x){return x.id===(c.dataset.u||c.dataset.x)})[0];if(!o)return;
+  var o=HC.filter(function(x){return x.id===(c.dataset.u||c.dataset.x||c.dataset.e)})[0];if(!o)return;
+  if(c.dataset.e){hEdit(o);return}
   if(c.dataset.u){dl(o.n+'.pdf',o.b)}else if(confirm('Hapus laporan '+o.n+' dari riwayat?'))hDel(o.id).then(hLoad)});
 $('#hz').onclick=function(){var l=hFil();if(!l.length)return;var b=this,k={};b.disabled=true;Promise.all(l.map(function(o){return o.b.arrayBuffer().then(function(a){var n=o.n;k[n]=(k[n]||0)+1;if(k[n]>1)n+=' ('+k[n]+')';return{n:n+'.pdf',d:new Uint8Array(a)}})})).then(function(f){var f1=$('#hf').value,t1=$('#ht').value;dl('Laporan-Kanopi'+(f1||t1?'_'+(f1||'awal')+'_sd_'+(t1||'akhir'):'')+'.zip',zip(f))}).catch(function(){toast('Gagal membuat ZIP')}).then(function(){b.disabled=false})};
 /* ===== data tandai dan tanaman ===== */
