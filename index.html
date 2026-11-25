@@ -1157,8 +1157,25 @@ body{box-shadow:0 0 0 1px var(--line),0 0 40px rgba(10,30,20,.10);min-height:100
 .hero .scene,.top .scene{width:100%;max-width:none;margin-bottom:0}
 /* kelompok: tidak ada agenda; rekap hanya dilihat (cetak/simpan/bukti khusus penyuluh & admin) */
 body.res #agCard,body.res #rkPrint,body.res #rkBukti,body.res #rkSave,body.res #txBb,body.res [data-jp]{display:none !important}
+/* v69 — ringan: matikan efek yang berat di GPU/CPU (blur kaca, bayangan filter yang beranimasi, animasi hiasan) */
+*,*::before,*::after{-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
+.wxc,.trow>.pch,.wxb{background:rgba(255,255,255,.24) !important}
+.tile svg,.ahd{filter:none !important}
+html.lite .tile svg,html.lite .ahd,html.lite .bb,html.lite .wxe,html.lite .nav button.on svg,html.lite .fab,
+html.lite .cld,html.lite .sw,html.lite .tw,html.lite .bd,html.lite .sr,html.lite .lt,html.lite .logo .ring{animation:none !important}
+html.lite .rn{display:none}
+html.tdk *{animation-play-state:paused !important}
+.sh,.rwc,.pkp{contain:layout paint}
+.tile,.card{contain:layout paint}
 </style>
 <script id="kunciLayarJs">
+(function(){
+ try{
+  var n=navigator.hardwareConcurrency||4,m=navigator.deviceMemory,h=document.documentElement;
+  if(!(n>=8&&(m===undefined||m>=8)))h.classList.add('lite');
+  document.addEventListener('visibilitychange',function(){h.classList.toggle('tdk',document.hidden)});
+ }catch(e){}
+})();
 (function(){
  // iOS Safari: matikan cubitan-zoom halaman (peta Leaflet memakai sentuhan sendiri, tidak terpengaruh)
  ['gesturestart','gesturechange','gestureend'].forEach(function(t){document.addEventListener(t,function(e){e.preventDefault()},{passive:false})});
